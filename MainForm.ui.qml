@@ -8,8 +8,8 @@ Item {
     height: 480
 
     property alias listViewConsoles: listViewConsoles
-    property alias modelConsoles: modelConsoles
-
+    //property alias modelConsoles: modelConsoles
+/*
     ListModel {
         id: modelConsoles
 
@@ -47,7 +47,7 @@ Item {
             text: "channel 11"
         }
     }
-
+*/
     Rectangle {
         id: rectConsoles
         width: 250

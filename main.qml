@@ -9,8 +9,19 @@ ApplicationWindow {
     width: 640
     height: 480
     visible: true
-
+/*
+    ListModel {
+        id: modelConsoles
+        ListElement {
+            text: "channel 10"
+        }
+        ListElement {
+            text: "channel 11"
+        }
+    }
+*/
     MainForm {
+        id: main_form
         anchors.fill: parent  
         listViewConsoles.delegate: Item {
             property var view: ListView.view
