@@ -1,0 +1,205 @@
+import QtQuick 2.4
+import QtQuick.Controls 1.3
+import QtQuick.Layouts 1.1
+
+Item {
+    id: main_form
+    width: 800
+    height: 480
+
+    property real top_size: 0.6
+    property real bot_size: 0.4
+
+    property real left_top_size: 0.3
+    property real right_top_size: 0.7
+
+    property real left_bot_size: 0.8
+    property real right_bot_size: 0.2
+
+    property alias devicelistView: deviceListView
+    property alias deviceListModel: deviceListModel
+
+    ListModel {
+        id: deviceListModel
+
+        ListElement {
+            color: "orange"
+            text: "first"
+        }
+        ListElement {
+            color: "lightgreen"
+            text: "second"
+        }
+        ListElement {
+            color: "orchid"
+            text: "thimainLayoutrd"
+        }
+        ListElement {
+            color: "tomato"
+            text: "fourth"
+        }
+    }
+
+    ColumnLayout {
+        id: mainLayout
+        rotation: 0
+        transformOrigin: Item.Center
+        spacing: 0
+        anchors.fill: parent
+
+    RowLayout {
+        id: topRowLayout
+        height: main_form.height * top_size
+        anchors.bottomMargin: 0
+        anchors.top: parent.top
+        anchors.right: parent.right
+        anchors.left: parent.left
+        anchors.topMargin: 0
+
+        ColumnLayout {
+            id: topLeftColLayout
+            width: main_form.width * left_top_size
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.top: parent.top
+
+            ListView {
+                id: deviceListView
+                anchors.top: deviceListLabel.bottom
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                anchors.topMargin: 0
+
+                model: deviceListModel
+                clip: true
+
+                highlight: Rectangle {
+                    color: "skyblue"
+                }
+                highlightFollowsCurrentItem: true
+            }
+
+            Label {
+                id: deviceListLabel
+                text: "Device list"
+                anchors.top: parent.top
+                anchors.right: parent.right
+                anchors.left: parent.left
+                anchors.topMargin: 0
+                font.pixelSize: 14
+                font.italic: true
+                color: "steelblue"
+            }
+        }
+
+        ColumnLayout {
+            id: topRightColLayout
+            width: main_form.width * right_top_size
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            anchors.top: parent.top
+
+            Button {
+                id: button4
+                text: qsTr("Button")
+            }
+
+            Button {
+                id: button5
+                text: qsTr("Button")
+            }
+
+            Button {
+                id: button6
+                text: qsTr("Button")
+            }
+        }
+    }
+
+    RowLayout {
+        id: bottomRowLayout
+        anchors.top: topRowLayout.bottom
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.topMargin: 0
+
+        GroupBox {
+            id: groupBox1
+            width: main_form.width * left_bot_size
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.top: parent.top
+            title: qsTr("Group Box1")
+
+            GridLayout {
+                id: gridLayout1
+                anchors.fill: parent
+                rows: 2
+                columns: 2
+
+                Button {
+                    id: button1
+                    text: qsTr("Button")
+                }
+
+                Button {
+                    id: button2
+                    text: qsTr("Button")
+                }
+
+                Button {
+                    id: button3
+                    x: -96
+                    text: qsTr("Button")
+                }
+
+                Button {
+                    id: button7
+                    text: qsTr("Button")
+                }
+            }
+        }
+
+        GroupBox {
+            id: groupBox2
+            width: main_form.width * right_bot_size
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            anchors.top: parent.top
+            anchors.leftMargin: 0
+            title: qsTr("Group Box")
+
+            GridLayout {
+                id: gridLayout2
+                anchors.fill: parent
+                rows: 2
+                columns: 2
+
+                Button {
+                    id: button8
+                    text: qsTr("Button")
+                }
+
+                Button {
+                    id: button9
+                    text: qsTr("Button")
+                }
+
+                Button {
+                    id: button10
+                    text: qsTr("Button")
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+}
