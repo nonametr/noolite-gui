@@ -3,6 +3,7 @@
 #include <QQmlContext>
 #include <QTranslator>
 #include <QDebug>
+#include <QIcon>
 
 #include "cpp_controller.h"
 
@@ -39,6 +40,7 @@ int getLocaleLanguage()
 int main(int argc, char *argv[])
 {   
     QApplication app(argc, argv);
+    app.setWindowIcon(QIcon(":/rx.png"));
 
     CPPController cpp_controller;
     QQmlApplicationEngine engine;
