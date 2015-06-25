@@ -9,8 +9,8 @@ class DataObject : public QObject
     Q_PROPERTY(QString text READ name WRITE setName NOTIFY nameChanged)
 
 public:
-    DataObject(QString v_name);
-    virtual ~DataObject();
+    DataObject(QString v_name) : _name(v_name) {}
+    virtual ~DataObject() override = default;
 
     QString name();
     void setName(const QString &v_name);

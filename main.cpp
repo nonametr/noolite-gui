@@ -1,10 +1,8 @@
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include <QQuickView>
 
 #include "data_object.h"
-#include <iostream>
 
 int main(int argc, char *argv[])
 {
