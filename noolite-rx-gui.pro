@@ -5,6 +5,11 @@ QT += qml quick widgets
 SOURCES += main.cpp \
     data_object.cpp
 
+lupdate_only {
+SOURCES = main.qml \
+          MainForm.ui.qml
+}
+
 RESOURCES += qml.qrc
 
 CONFIG += c++11
@@ -17,3 +22,7 @@ include(deployment.pri)
 
 HEADERS += \
     data_object.h
+
+TRANSLATIONS = translations/english.ts \
+               translations/ukrainian.ts \
+               translations/russian.ts
