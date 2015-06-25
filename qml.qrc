@@ -2,5 +2,8 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>MainForm.ui.qml</file>
+        <file>translations/english.qm</file>
+        <file>translations/russian.qm</file>
+        <file>translations/ukrainian.qm</file>
     </qresource>
 </RCC>

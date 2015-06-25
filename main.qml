@@ -6,23 +6,60 @@ import QtQuick.Dialogs 1.2
 ApplicationWindow {
     id: nooliteToolRX
     title: qsTr("RX Tool")
-    width: 640
+    width: 840
     height: 480
+    minimumWidth: 840
+    minimumHeight: 480
     visible: true
-/*
-    ListModel {
-        id: modelConsoles
-        ListElement {
-            text: "channel 10"
-        }
-        ListElement {
-            text: "channel 11"
+
+    property int lang_english : 1
+    property int lang_russian : 2
+    property int lang_ukrainian : 3
+
+    menuBar: MenuBar {
+        Menu {
+            title: qsTr("&Menu")
+
+            Menu {
+                title: qsTr("&Language")
+
+                MenuItem {
+                    text: qsTr("&English")
+                    onTriggered: {
+                        cpp_controller.onLanguageChanged(lang_english)
+                        close()
+                    }
+                }
+                MenuItem {
+                    text: qsTr("&Ukrainian")
+                    onTriggered: {
+                        cpp_controller.onLanguageChanged(lang_ukrainian)
+                        close()
+                    }
+                }
+                MenuItem {
+                    text: qsTr("&Russian")
+                    onTriggered: {
+                        cpp_controller.onLanguageChanged(lang_russian)
+                        close()
+                    }
+                }
+            }
+            MenuSeparator { }
+            MenuItem {
+                text: qsTr("E&xit")
+                onTriggered: Qt.quit();
+            }
         }
     }
-*/
+
     MainForm {
-        id: main_form
-        anchors.fill: parent  
+        id: mainForm
+        anchors.fill: parent
+
+        settingsButton.onClicked: messageDialog.show(qsTr("This functionality not Implemented!"));
+        exitButton.onClicked: Qt.quit();
+
         listViewConsoles.delegate: Item {
             property var view: ListView.view
             property var isCurrent: ListView.isCurrentItem

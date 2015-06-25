@@ -2,126 +2,118 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_UA" sourcelanguage="ru_UA">
 <context>
-    <name>MainForm</name>
+    <name>MainForm.ui</name>
     <message>
-        <location filename="../MainForm.ui.qml" line="97"/>
+        <location filename="../MainForm.ui.qml" line="60"/>
         <source>Status:</source>
-        <translation>Состояние:</translation>
+        <translation>Статус:</translation>
     </message>
     <message>
-        <location filename="../MainForm.ui.qml" line="120"/>
+        <location filename="../MainForm.ui.qml" line="83"/>
         <source>Data[1]:</source>
         <translation>Регистр_1:</translation>
     </message>
     <message>
-        <location filename="../MainForm.ui.qml" line="129"/>
-        <source>2</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../MainForm.ui.qml" line="142"/>
+        <location filename="../MainForm.ui.qml" line="106"/>
         <source>Data[3]:</source>
         <translation>Регистр_3:</translation>
     </message>
     <message>
-        <location filename="../MainForm.ui.qml" line="151"/>
-        <source>4</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../MainForm.ui.qml" line="166"/>
+        <location filename="../MainForm.ui.qml" line="131"/>
         <source>Data[0]:</source>
         <translation>Регистр_0:</translation>
     </message>
     <message>
-        <location filename="../MainForm.ui.qml" line="176"/>
-        <source>1</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../MainForm.ui.qml" line="192"/>
+        <location filename="../MainForm.ui.qml" line="158"/>
         <source>Data[2]:</source>
         <translation>Регистр_2:</translation>
     </message>
     <message>
-        <location filename="../MainForm.ui.qml" line="202"/>
-        <source>3</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../MainForm.ui.qml" line="231"/>
+        <location filename="../MainForm.ui.qml" line="197"/>
         <source>Action:</source>
         <translation>Действие:</translation>
     </message>
     <message>
-        <location filename="../MainForm.ui.qml" line="243"/>
-        <source>Switch[4]</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../MainForm.ui.qml" line="264"/>
+        <location filename="../MainForm.ui.qml" line="230"/>
         <source>Channel:</source>
         <translation>Канал:</translation>
     </message>
     <message>
-        <location filename="../MainForm.ui.qml" line="273"/>
-        <source>14</source>
+        <location filename="../MainForm.ui.qml" line="92"/>
+        <location filename="../MainForm.ui.qml" line="115"/>
+        <location filename="../MainForm.ui.qml" line="141"/>
+        <location filename="../MainForm.ui.qml" line="168"/>
+        <source>0</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../MainForm.ui.qml" line="293"/>
+        <location filename="../MainForm.ui.qml" line="209"/>
+        <location filename="../MainForm.ui.qml" line="239"/>
+        <source>dummy</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../MainForm.ui.qml" line="260"/>
         <source>Action</source>
         <translation>Действие</translation>
     </message>
     <message>
-        <location filename="../MainForm.ui.qml" line="315"/>
+        <location filename="../MainForm.ui.qml" line="282"/>
         <source>Script</source>
         <translation>Скрипт</translation>
     </message>
     <message>
-        <location filename="../MainForm.ui.qml" line="324"/>
+        <location filename="../MainForm.ui.qml" line="291"/>
         <source>Text Field</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../MainForm.ui.qml" line="346"/>
+        <location filename="../MainForm.ui.qml" line="313"/>
         <source>Link</source>
-        <translation>Привязка</translation>
+        <translation>Привязать</translation>
     </message>
     <message>
-        <location filename="../MainForm.ui.qml" line="355"/>
+        <location filename="../MainForm.ui.qml" line="322"/>
         <source>Clean</source>
-        <translation>Очистить терминал</translation>
+        <translation>Очистить</translation>
+    </message>
+    <message>
+        <location filename="../MainForm.ui.qml" line="331"/>
+        <source>Save</source>
+        <translation>Сохранить</translation>
     </message>
     <message>
         <location filename="../MainForm.ui.qml" line="364"/>
-        <source>Save</source>
-        <translation>Сохранить изменения</translation>
-    </message>
-    <message>
-        <location filename="../MainForm.ui.qml" line="397"/>
         <source>Forward input data as script arguments</source>
-        <translation>Использовать принятые данные как аргумент</translation>
+        <translation>Перенаправить ввод в скрипт</translation>
     </message>
     <message>
-        <location filename="../MainForm.ui.qml" line="418"/>
+        <location filename="../MainForm.ui.qml" line="385"/>
         <source>Add extended data to script arguments</source>
-        <translation>Добавлять дополнительную информацию</translation>
+        <translation>Перенаправить дополнительные параметры в скрипт</translation>
     </message>
     <message>
-        <location filename="../MainForm.ui.qml" line="431"/>
+        <location filename="../MainForm.ui.qml" line="398"/>
         <source>Consoles:</source>
         <translation>Терминалы:</translation>
     </message>
     <message>
-        <location filename="../MainForm.ui.qml" line="452"/>
+        <location filename="../MainForm.ui.qml" line="419"/>
         <source>Exit</source>
-        <translation>Выйти</translation>
+        <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../MainForm.ui.qml" line="465"/>
+        <location filename="../MainForm.ui.qml" line="432"/>
         <source>Settings</source>
-        <translation>Настройки</translation>
+        <translation>Параметры</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <location filename="../main.cpp" line="15"/>
+        <source>Channel #</source>
+        <translation>Канал #</translation>
     </message>
 </context>
 <context>
@@ -129,10 +121,45 @@
     <message>
         <location filename="../main.qml" line="8"/>
         <source>RX Tool</source>
-        <translation>Управление приемником</translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../main.qml" line="58"/>
+        <location filename="../main.qml" line="21"/>
+        <source>&amp;Menu</source>
+        <translation>&amp;Меню</translation>
+    </message>
+    <message>
+        <location filename="../main.qml" line="24"/>
+        <source>&amp;Language</source>
+        <translation>&amp;Язык</translation>
+    </message>
+    <message>
+        <location filename="../main.qml" line="27"/>
+        <source>&amp;English</source>
+        <translation>&amp;Английский</translation>
+    </message>
+    <message>
+        <location filename="../main.qml" line="34"/>
+        <source>&amp;Ukrainian</source>
+        <translation>&amp;Украинский</translation>
+    </message>
+    <message>
+        <location filename="../main.qml" line="41"/>
+        <source>&amp;Russian</source>
+        <translation>&amp;Русский</translation>
+    </message>
+    <message>
+        <location filename="../main.qml" line="50"/>
+        <source>E&amp;xit</source>
+        <translation>&amp;Выход</translation>
+    </message>
+    <message>
+        <location filename="../main.qml" line="60"/>
+        <source>This functionality not Implemented!</source>
+        <translation>Эта функция пока не реализована!</translation>
+    </message>
+    <message>
+        <location filename="../main.qml" line="95"/>
         <source>May I have your attention, please?</source>
         <translation>Обратите внимание!</translation>
     </message>

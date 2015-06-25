@@ -8,46 +8,9 @@ Item {
     height: 480
 
     property alias listViewConsoles: listViewConsoles
-    //property alias modelConsoles: modelConsoles
-/*
-    ListModel {
-        id: modelConsoles
+    property alias exitButton: exitButton
+    property alias settingsButton: settingsButton
 
-        ListElement {
-            text: "channel 1"
-        }
-        ListElement {
-            text: "channel 2"
-        }
-        ListElement {
-            text: "channel 3"
-        }
-        ListElement {
-            text: "channel 4"
-        }
-        ListElement {
-            text: "channel 5"
-        }
-        ListElement {
-            text: "channel 6"
-        }
-        ListElement {
-            text: "channel 7"
-        }
-        ListElement {
-            text: "channel 8"
-        }
-        ListElement {
-            text: "channel 9"
-        }
-        ListElement {
-            text: "channel 10"
-        }
-        ListElement {
-            text: "channel 11"
-        }
-    }
-*/
     Rectangle {
         id: rectConsoles
         width: 250
@@ -107,7 +70,7 @@ Item {
             rows: 2
             columns: 2
             anchors.left: columnLayout1.right
-            anchors.leftMargin: 32
+            anchors.leftMargin: 240
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 0
 
@@ -126,7 +89,8 @@ Item {
 
                 Label {
                     id: labelChannel3
-                    text: qsTr("2")
+                    text: qsTr("0")
+                    font.family: "Times New Roman"
                     font.pointSize: 14
                     font.bold: false
                     Layout.fillHeight: true
@@ -148,7 +112,8 @@ Item {
 
                 Label {
                     id: labelChannel5
-                    text: qsTr("4")
+                    text: qsTr("0")
+                    font.family: "Times New Roman"
                     font.pointSize: 14
                     font.bold: false
                     Layout.fillHeight: true
@@ -173,7 +138,8 @@ Item {
 
                 Label {
                     id: labelChannel2
-                    text: qsTr("1")
+                    text: qsTr("0")
+                    font.family: "Times New Roman"
                     verticalAlignment: Text.AlignBottom
                     font.pointSize: 14
                     font.bold: false
@@ -199,7 +165,7 @@ Item {
 
                 Label {
                     id: labelChannel4
-                    text: qsTr("3")
+                    text: qsTr("0")
                     verticalAlignment: Text.AlignBottom
                     font.family: "Times New Roman"
                     font.pointSize: 14
@@ -240,7 +206,7 @@ Item {
 
                 Label {
                     id: labelChannel1
-                    text: qsTr("Switch[4]")
+                    text: qsTr("dummy")
                     verticalAlignment: Text.AlignBottom
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 0
@@ -270,7 +236,8 @@ Item {
 
                 Label {
                     id: labelChannel
-                    text: qsTr("14")
+                    text: qsTr("dummy")
+                    font.family: "Times New Roman"
                     Layout.fillHeight: true
                     font.bold: false
                     font.pointSize: 14
