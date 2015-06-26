@@ -106,7 +106,7 @@ char* Config::_readFile(const string str_file)
         memset(buf, 0, len);
         fread(buf, len, 1, fp);
         fclose(fp);
-        printf("Loading configuration file from = %s, size = %u", str_file.c_str(), len);
+        qDebug() << "Loading configuration file from" << str_file.c_str();
     }
 
     return buf;

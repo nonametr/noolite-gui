@@ -16,6 +16,60 @@ ApplicationWindow {
     property int lang_russian : 2
     property int lang_ukrainian : 3
 
+    MainForm {
+        id: mainForm
+        anchors.fill: parent
+
+        settingsButton.onClicked: messageDialog.show(qsTr("This functionality not Implemented!"));
+        exitButton.onClicked: Qt.quit();
+        openScriptButton.onClicked: fileDialog.open()
+
+        listViewConsoles.delegate: Item {
+            property var view: ListView.view
+            property var isCurrent: ListView.isCurrentItem
+
+            width: view.width
+            height: 40
+
+            Rectangle {
+                anchors.margins: 5
+                anchors.fill: parent                
+                border {
+                    color: "black"
+                    width: 1
+                }
+
+                Text {
+                    anchors.centerIn: parent
+                    renderType: Text.NativeRendering
+                    text: "%1%2".arg(model.text).arg(isCurrent ? " *" : "")
+                }
+
+                MouseArea {
+                    id: mouseArea
+                    anchors.fill: parent
+                    onClicked: view.currentIndex = model.index
+                }
+            }
+        }
+    }
+
+    FileDialog {
+        id: fileDialog
+        title: "Please choose a script file"
+        nameFilters: [ "Script files (*.sh *.php *.py *.pl *.ps1 *.bat)", "All files (*)" ]
+        onAccepted: {
+            console.log("Selected script => " + fileDialog.fileUrls)
+            var path = fileDialog.fileUrl.toString();
+            path = path.replace(/^(file:\/{3})|(qrc:\/{2})|(http:\/{2})/,"");
+            path = "/" + decodeURIComponent(path);
+            mainForm.textFieldScriptPath.text = path
+        }
+        onRejected: {
+            console.log("File selection canceled")
+        }
+    }
+
     menuBar: MenuBar {
         Menu {
             title: qsTr("&Menu")
@@ -49,43 +103,6 @@ ApplicationWindow {
             MenuItem {
                 text: qsTr("E&xit")
                 onTriggered: Qt.quit();
-            }
-        }
-    }
-
-    MainForm {
-        id: mainForm
-        anchors.fill: parent
-
-        settingsButton.onClicked: messageDialog.show(qsTr("This functionality not Implemented!"));
-        exitButton.onClicked: Qt.quit();
-
-        listViewConsoles.delegate: Item {
-            property var view: ListView.view
-            property var isCurrent: ListView.isCurrentItem
-
-            width: view.width
-            height: 40
-
-            Rectangle {
-                anchors.margins: 5
-                anchors.fill: parent                
-                border {
-                    color: "black"
-                    width: 1
-                }
-
-                Text {
-                    anchors.centerIn: parent
-                    renderType: Text.NativeRendering
-                    text: "%1%2".arg(model.text).arg(isCurrent ? " *" : "")
-                }
-
-                MouseArea {
-                    id: mouseArea
-                    anchors.fill: parent
-                    onClicked: view.currentIndex = model.index
-                }
             }
         }
     }

@@ -1,6 +1,7 @@
 import QtQuick 2.4
 import QtQuick.Controls 1.3
 import QtQuick.Layouts 1.1
+import QtQuick.Dialogs 1.0
 
 Item {
     id: mainForm
@@ -10,6 +11,8 @@ Item {
     property alias listViewConsoles: listViewConsoles
     property alias exitButton: exitButton
     property alias settingsButton: settingsButton
+    property alias openScriptButton: openScriptButton
+    property alias textFieldScriptPath : textFieldScriptPath
 
     Rectangle {
         id: rectConsoles
@@ -261,11 +264,34 @@ Item {
         }
 
         ComboBox {
-            id: comboBox1
+            id: comboBoxAction
             anchors.left: parent.left
             anchors.leftMargin: 0
             anchors.right: parent.right
             anchors.rightMargin: 0
+
+            model: ListModel {
+                id: modelActions
+                ListElement { text: "Turn off";   }
+                ListElement { text: "Slow turn off";    }
+                ListElement { text: "Turn on";  }
+                ListElement { text: "Slow turn on";  }
+                ListElement { text: "Switch";  }
+                ListElement { text: "Revert slow turn";  }
+                ListElement { text: "Set level";  }
+                ListElement { text: "Run scene";  }
+                ListElement { text: "Record scene";  }
+                ListElement { text: "Unbind";  }
+                ListElement { text: "Stop dim bright";  }
+                ListElement { text: "Bind";  }
+                ListElement { text: "Slow RGB change";  }
+                ListElement { text: "Switch color";  }
+                ListElement { text: "Switch mode";  }
+                ListElement { text: "Switch speed mode";  }
+                ListElement { text: "Battery low";  }
+                ListElement { text: "Temperature";  }
+            }
+
         }
     }
 
@@ -280,15 +306,35 @@ Item {
         Label {
             id: actionLabel1
             text: qsTr("Script")
+            anchors.left: parent.left
+            anchors.leftMargin: 0
         }
 
-        TextField {
-            id: textFieldScriptPath
+        RowLayout {
+            id: rowLayout1
+            height: 100
             anchors.right: parent.right
             anchors.rightMargin: 0
             anchors.left: parent.left
             anchors.leftMargin: 0
-            placeholderText: qsTr("Text Field")
+
+            TextField {
+                id: textFieldScriptPath
+                placeholderText: "\\home\\user\\rx-action.sh"
+                anchors.topMargin: 8
+                anchors.right: openScriptButton.left
+                anchors.rightMargin: 4
+                anchors.left: parent.left
+                anchors.leftMargin: 0
+            }
+
+            ToolButton {
+                id: openScriptButton
+                text: qsTr("...")
+                anchors.right: parent.right
+                anchors.rightMargin: 0
+            }
+
         }
     }
 
@@ -391,19 +437,19 @@ Item {
         }
     }
 
-Label {
-    id: labelConsoles
-    x: 8
-    y: 8
-    text: qsTr("Consoles:")
-    anchors.left: parent.left
-    anchors.leftMargin: 8
-    anchors.top: parent.top
-    anchors.topMargin: 8
-}
+    Label {
+        id: labelConsoles
+        x: 8
+        y: 8
+        text: qsTr("Consoles:")
+        anchors.left: parent.left
+        anchors.leftMargin: 8
+        anchors.top: parent.top
+        anchors.topMargin: 8
+    }
 
-ColumnLayout {
-    id: columnLayoutExit
+    ColumnLayout {
+        id: columnLayoutExit
         anchors.left: rowLayoutLink.horizontalCenter
         anchors.leftMargin: 8
         anchors.top: rowLayoutLink.bottom

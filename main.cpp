@@ -7,7 +7,6 @@
 #include <stdio.h>
 
 #include "cpp_controller.h"
-#include "common.h"
 
 int main(int argc, char *argv[])
 {
