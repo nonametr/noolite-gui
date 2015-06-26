@@ -272,24 +272,24 @@ Item {
 
             model: ListModel {
                 id: modelActions
-                ListElement { text: "Turn off";   }
-                ListElement { text: "Slow turn off";    }
-                ListElement { text: "Turn on";  }
-                ListElement { text: "Slow turn on";  }
-                ListElement { text: "Switch";  }
-                ListElement { text: "Revert slow turn";  }
-                ListElement { text: "Set level";  }
-                ListElement { text: "Run scene";  }
-                ListElement { text: "Record scene";  }
-                ListElement { text: "Unbind";  }
-                ListElement { text: "Stop dim bright";  }
-                ListElement { text: "Bind";  }
-                ListElement { text: "Slow RGB change";  }
-                ListElement { text: "Switch color";  }
-                ListElement { text: "Switch mode";  }
-                ListElement { text: "Switch speed mode";  }
-                ListElement { text: "Battery low";  }
-                ListElement { text: "Temperature";  }
+                ListElement { text: qsTr("Turn off");   }
+                ListElement { text: qsTr("Slow turn off");    }
+                ListElement { text: qsTr("Turn on");  }
+                ListElement { text: qsTr("Slow turn on");  }
+                ListElement { text: qsTr("Switch");  }
+                ListElement { text: qsTr("Revert slow turn");  }
+                ListElement { text: qsTr("Set level");  }
+                ListElement { text: qsTr("Run scene");  }
+                ListElement { text: qsTr("Record scene");  }
+                ListElement { text: qsTr("Unbind");  }
+                ListElement { text: qsTr("Stop dim bright");  }
+                ListElement { text: qsTr("Bind");  }
+                ListElement { text: qsTr("Slow RGB change");  }
+                ListElement { text: qsTr("Switch color");  }
+                ListElement { text: qsTr("Switch mode");  }
+                ListElement { text: qsTr("Switch speed mode");  }
+                ListElement { text: qsTr("Battery low");  }
+                ListElement { text: qsTr("Temperature");  }
             }
 
         }
@@ -330,7 +330,7 @@ Item {
 
             ToolButton {
                 id: openScriptButton
-                text: qsTr("...")
+                text: "..."
                 anchors.right: parent.right
                 anchors.rightMargin: 0
             }

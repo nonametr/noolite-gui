@@ -39,16 +39,26 @@ ApplicationWindow {
                     width: 1
                 }
 
-                Text {
+                TextEdit {
+                    activeFocusOnPress: false
                     anchors.centerIn: parent
-                    renderType: Text.NativeRendering
+                    //renderType: Text.NativeRendering
                     text: "%1%2".arg(model.text).arg(isCurrent ? " *" : "")
                 }
 
                 MouseArea {
                     id: mouseArea
                     anchors.fill: parent
-                    onClicked: view.currentIndex = model.index
+                    acceptedButtons: Qt.LeftButton | Qt.RightButton
+                    onClicked: {
+                        if(mouse.button == Qt.LeftButton)
+                        {
+                            parent.forceActiveFocus(Qt.MouseFocusReason)
+                            view.currentIndex = model.index
+                        }
+                        else if(mouse.button == Qt.RightButton)
+                            view.currentIndex = model.index
+                    }
                 }
             }
         }

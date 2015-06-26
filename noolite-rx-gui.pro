@@ -10,6 +10,8 @@ SOURCES += main.cpp \
 lupdate_only {
 SOURCES = main.qml \
           main.cpp \
+          config.cpp \
+          cpp_controller.cpp \
           data_object.cpp \
           MainForm.ui.qml
 }
