@@ -28,12 +28,14 @@ CPPController::CPPController()
 void CPPController::setEngine(QQmlApplicationEngine &l_engine)
 {
     engine = &l_engine;
+    _setLanguage(config.getLang());
 }
 
 void CPPController::onLanguageChanged(const int new_lang)
 {
-    setLanguage(new_lang);
+    _setLanguage(new_lang);
     reloadWindow();
+    config.setLang(new_lang);
 }
 
 void CPPController::reloadWindow()
@@ -46,7 +48,7 @@ void CPPController::reloadWindow()
     engine->load(QUrl(QStringLiteral("qrc:/main.qml")));
 }
 
-void CPPController::setLanguage(const int new_lang)
+void CPPController::_setLanguage(const int new_lang)
 {
     qDebug() << "Switching language to " << lang_map[new_lang].toStdString().c_str();
 

@@ -4,7 +4,8 @@ QT += qml quick widgets
 
 SOURCES += main.cpp \
     data_object.cpp \
-    cpp_controller.cpp
+    cpp_controller.cpp \
+    config.cpp
 
 lupdate_only {
 SOURCES = main.qml \
@@ -25,7 +26,8 @@ include(deployment.pri)
 
 HEADERS += \
     data_object.h \
-    cpp_controller.h
+    cpp_controller.h \
+    config.h
 
 TRANSLATIONS = translations/english.ts \
                translations/ukrainian.ts \
