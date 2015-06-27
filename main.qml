@@ -16,43 +16,6 @@ ApplicationWindow {
     property int lang_russian : 2
     property int lang_ukrainian : 3
 
-    menuBar: MenuBar {
-        Menu {
-            title: qsTr("&Menu")
-
-            Menu {
-                title: qsTr("&Language")
-
-                MenuItem {
-                    text: qsTr("&English")
-                    onTriggered: {
-                        cpp_controller.onLanguageChanged(lang_english)
-                        close()
-                    }
-                }
-                MenuItem {
-                    text: qsTr("&Ukrainian")
-                    onTriggered: {
-                        cpp_controller.onLanguageChanged(lang_ukrainian)
-                        close()
-                    }
-                }
-                MenuItem {
-                    text: qsTr("&Russian")
-                    onTriggered: {
-                        cpp_controller.onLanguageChanged(lang_russian)
-                        close()
-                    }
-                }
-            }
-            MenuSeparator { }
-            MenuItem {
-                text: qsTr("E&xit")
-                onTriggered: Qt.quit();
-            }
-        }
-    }
-
     MainForm {
         id: mainForm
         anchors.fill: parent
