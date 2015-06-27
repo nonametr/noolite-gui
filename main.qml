@@ -22,6 +22,7 @@ ApplicationWindow {
 
         settingsButton.onClicked: messageDialog.show(qsTr("This functionality not Implemented!"));
         exitButton.onClicked: Qt.quit();
+        openScriptButton.onClicked: fileDialog.open()
 
         listViewConsoles.delegate: Item {
             property var view: ListView.view
@@ -32,30 +33,105 @@ ApplicationWindow {
 
             Rectangle {
                 anchors.margins: 5
-                anchors.fill: parent                
+                anchors.fill: parent
                 border {
                     color: "black"
                     width: 1
                 }
 
                 TextInput {
-                    id: textinput
+                    id: listItemTextInput
+                    activeFocusOnPress: false
                     anchors.centerIn: parent
                     renderType: Text.NativeRendering
+                    onEditingFinished: model.text = text
                     text: "%1%2".arg(model.text).arg(isCurrent ? " *" : "")
                 }
 
                 MouseArea {
                     id: mouseArea
                     anchors.fill: parent
-                    hoverEnabled: true
+                    acceptedButtons: Qt.LeftButton | Qt.RightButton
+                    onDoubleClicked: {
+                        listItemTextInput.forceActiveFocus()
+                        view.currentIndex = -1
+                    }
                     onClicked: {
-                        textinput.forceActiveFocus()
-                        view.currentIndex = model.index
+                        if(mouse.button == Qt.LeftButton)
+                        {
+                            parent.forceActiveFocus(Qt.MouseFocusReason)
+                            view.currentIndex = model.index
+                        }
+                        else if(mouse.button == Qt.RightButton) {
+                            view.currentIndex = model.index
+                            listViewContextMenu.popup()
+                        }
                     }
                 }
-
             }
+        }
+    }
+
+    FileDialog {
+        id: fileDialog
+        title: "Please choose a script file"
+        nameFilters: [ "Script files (*.sh *.php *.py *.pl *.ps1 *.bat)", "All files (*)" ]
+        onAccepted: {
+            console.log("Selected script => " + fileDialog.fileUrls)
+            var path = fileDialog.fileUrl.toString();
+            path = path.replace(/^(file:\/{3})|(qrc:\/{2})|(http:\/{2})/,"");
+            path = "/" + decodeURIComponent(path);
+            mainForm.textFieldScriptPath.text = path
+        }
+        onRejected: {
+            console.log("File selection canceled")
+        }
+    }
+
+    menuBar: MenuBar {
+        Menu {
+            title: qsTr("&Menu")
+
+            Menu {
+                title: qsTr("&Language")
+
+                MenuItem {
+                    text: qsTr("&English")
+                    onTriggered: {
+                        cpp_controller.onLanguageChanged(lang_english)
+                        close()
+                    }
+                }
+                MenuItem {
+                    text: qsTr("&Ukrainian")
+                    onTriggered: {
+                        cpp_controller.onLanguageChanged(lang_ukrainian)
+                        close()
+                    }
+                }
+                MenuItem {
+                    text: qsTr("&Russian")
+                    onTriggered: {
+                        cpp_controller.onLanguageChanged(lang_russian)
+                        close()
+                    }
+                }
+            }
+            MenuSeparator { }
+            MenuItem {
+                text: qsTr("E&xit")
+                onTriggered: Qt.quit();
+            }
+        }
+    }
+
+    Menu {
+        id: listViewContextMenu
+        MenuItem {
+            text: qsTr('Edit')
+        }
+        MenuItem {
+            text: qsTr('Reset')
         }
     }
 
