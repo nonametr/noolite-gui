@@ -75,7 +75,8 @@ ApplicationWindow {
                     width: 1
                 }
 
-                Text {
+                TextInput {
+                    id: textinput
                     anchors.centerIn: parent
                     renderType: Text.NativeRendering
                     text: "%1%2".arg(model.text).arg(isCurrent ? " *" : "")
@@ -84,8 +85,13 @@ ApplicationWindow {
                 MouseArea {
                     id: mouseArea
                     anchors.fill: parent
-                    onClicked: view.currentIndex = model.index
+                    hoverEnabled: true
+                    onClicked: {
+                        textinput.forceActiveFocus()
+                        view.currentIndex = model.index
+                    }
                 }
+
             }
         }
     }
