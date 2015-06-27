@@ -25,6 +25,7 @@ QML_IMPORT_PATH =
 
 # Default rules for deployment.
 include(deployment.pri)
+ICON = rx.icns
 
 HEADERS += \
     data_object.h \
