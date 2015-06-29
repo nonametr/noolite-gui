@@ -3,22 +3,21 @@ TEMPLATE = app
 QT += qml quick widgets
 
 SOURCES += main.cpp \
-    data_object.cpp \
     cpp_controller.cpp \
-    config.cpp
+    config.cpp \
+    consoles_model.cpp
 
 lupdate_only {
 SOURCES = main.qml \
           main.cpp \
           config.cpp \
           cpp_controller.cpp \
-          data_object.cpp \
           MainForm.ui.qml
 }
 
 RESOURCES += qml.qrc
 
-ICON = rx.icns
+ICON = rx.icns#it's for OSX
 
 CONFIG += c++11
 
@@ -29,9 +28,9 @@ QML_IMPORT_PATH =
 include(deployment.pri)
 
 HEADERS += \
-    data_object.h \
     cpp_controller.h \
-    config.h
+    config.h \
+    consoles_model.h
 
 TRANSLATIONS = translations/english.ts \
                translations/ukrainian.ts \

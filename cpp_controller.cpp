@@ -1,5 +1,4 @@
 #include "cpp_controller.h"
-#include "data_object.h"
 
 #include <QDebug>
 #include <QQmlContext>
@@ -43,7 +42,8 @@ void CPPController::reloadWindow()
     engine->clearComponentCache();
 
     QQmlContext *context = engine->rootContext();
-    context->setContextProperty("modelConsoles", QVariant::fromValue(_createModelConsoles()));
+    ConsolesModel *model = _createModelConsoles();
+    context->setContextProperty("modelConsoles", model);
 
     engine->load(QUrl(QStringLiteral("qrc:/main.qml")));
 }
@@ -64,14 +64,15 @@ void CPPController::_setLanguage(const int new_lang)
     qApp->installTranslator(current_translator);
 }
 
-QList<QObject*> CPPController::_createModelConsoles()
+ConsolesModel *CPPController::_createModelConsoles()
 {
-    QList<QObject*> consolesList;
+    ConsolesModel *model = new ConsolesModel;
+
     for(uint i = 0; i < 64; ++i)
     {
-        std::string channel = QObject::tr("Channel #").toStdString() + std::to_string(i);
-        consolesList.append(new DataObject(channel.c_str()));
+        QString channel = QObject::tr("Channel #") + QString::number(i);
+        model->addConsole(Console(channel, i));
     }
 
-    return consolesList;
+    return model;
 }

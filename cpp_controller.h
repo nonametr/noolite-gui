@@ -9,6 +9,7 @@
 #include <map>
 
 #include "config.h"
+#include "consoles_model.h"
 
 using namespace std;
 
@@ -42,7 +43,7 @@ private:
 
     QQmlApplicationEngine *engine = nullptr;
 
-    QList<QObject*> _createModelConsoles();
+    ConsolesModel *_createModelConsoles();
     void _setLanguage(const int new_lang);
 };
 
