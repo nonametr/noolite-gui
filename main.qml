@@ -6,9 +6,9 @@ import QtQuick.Dialogs 1.2
 ApplicationWindow {
     id: nooliteToolRX
     title: qsTr("RX Tool")
-    width: 840
+    width: 900
     height: 480
-    minimumWidth: 840
+    minimumWidth: 900
     minimumHeight: 480
     visible: true
 
