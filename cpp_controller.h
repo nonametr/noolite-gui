@@ -7,9 +7,13 @@
 #include <QQmlApplicationEngine>
 
 #include <map>
+#include <libusb-1.0/libusb.h>
 
 #include "config.h"
-#include "consoles_model.h"
+#include "channels_model.h"
+#include "common.h"
+#include "../noolite-rx/rx2164.h"
+#include "status_model.h"
 
 using namespace std;
 
@@ -23,15 +27,21 @@ class CPPController : public QObject
 
 public:
    CPPController();
-   virtual ~CPPController() override = default;
+   virtual ~CPPController() override;
 
+   RX2164_STATE rxStart();
    void reloadWindow();
    void setEngine(QQmlApplicationEngine &l_engine);
 
 public slots:
+   void onSave();
    void onLanguageChanged(const int new_lang);
+   void onBind(const int ch_id);
+   void onUnbind(const int ch_id);
+   void onEvent(int new_togl, int action, int channel, int data_format);
 
 private:
+    RX2164 rx;
     Config config;
     QTranslator en_translator;
     QTranslator ru_translator;
@@ -41,9 +51,12 @@ private:
     map<int, QTranslator*> translator_map;
     map<int, QString> lang_map;
 
+    QQmlContext *_context = nullptr;
     QQmlApplicationEngine *engine = nullptr;
 
-    ConsolesModel *_createModelConsoles();
+    StatusModel _status_model;
+    ChannelsModel _channels_model;
+
     void _setLanguage(const int new_lang);
 };
 

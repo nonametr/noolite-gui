@@ -5,11 +5,14 @@
 #include <QIcon>
 
 #include <stdio.h>
+#include <syslog.h>
 
 #include "cpp_controller.h"
 
 int main(int argc, char *argv[])
 {
+    openlog(argv[0], LOG_PID | LOG_PERROR, LOG_USER);
+
     QApplication app(argc, argv);
     app.setWindowIcon(QIcon(":/rx.png"));
 

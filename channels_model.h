@@ -3,10 +3,10 @@
 
 #include <QAbstractListModel>
 
-class Console
+class Channel
 {
 public:
-    Console(const QString &v_name, const qint32 &v_channel);
+    Channel(const QString &v_name, const qint32 &v_channel);
 
     QString name() const;
     qint32 channel() const;
@@ -19,7 +19,7 @@ private:
     qint32 _channel;
 };
 
-class ConsolesModel : public QAbstractListModel
+class ChannelsModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
@@ -28,9 +28,10 @@ public:
         ChannelField
     };
 
-    ConsolesModel(QObject *parent = 0);
+    ChannelsModel(QObject *parent = 0);
 
-    void addConsole(const Console &v_console);
+    void addChannel(const Channel &v_console);
+    QList<Channel> &getChannels(){ return _channels; }
 
     virtual int rowCount(const QModelIndex & parent = QModelIndex()) const override;
     virtual QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const override;
@@ -43,7 +44,7 @@ public slots:
     bool setProperty(int row, QString propertyName, QVariant propertyValue);
 
 private:
-    QList<Console> _consoles;
+    QList<Channel> _channels;
 
     static QHash<int, QByteArray> role_fields;
     static QHash<QByteArray, int> field_roles;

@@ -16,23 +16,6 @@ ApplicationWindow {
     property int lang_russian : 2
     property int lang_ukrainian : 3
 
-    ListModel {
-           id: modelConsoles2
-
-           ListElement {
-               text: "channel #1"
-           }
-           ListElement {
-               text: "second"
-           }
-           ListElement {
-               text: "third"
-           }
-           ListElement {
-               text: "fourth"
-           }
-       }
-
     MainForm {
         id: mainForm
         anchors.fill: parent
@@ -63,7 +46,7 @@ ApplicationWindow {
                     anchors.centerIn: parent
                     renderType: Text.NativeRendering
                     onEditingFinished: {
-                        modelConsoles.setProperty(model.index, "text", text)
+                        cpp_model_channels.setProperty(model.index, "text", text)
                     }
                     text: "%1%2".arg(model.text).arg(isCurrent ? " *" : "")
                 }
@@ -81,12 +64,9 @@ ApplicationWindow {
                         {
                             parent.forceActiveFocus(Qt.MouseFocusReason)
                             view.currentIndex = model.index
-                            console.log(model.channel)
-                            for(var i = 0; i < model.act_ount; ++i) {
-                                console.log(model.getAction(i).action_name);
-                            }
                         }
-                        else if(mouse.button == Qt.RightButton) {
+                        else if(mouse.button == Qt.RightButton)
+                        {
                             view.currentIndex = model.index
                             listViewContextMenu.popup()
                         }

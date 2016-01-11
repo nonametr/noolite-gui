@@ -7,20 +7,62 @@
 
 const string Config::_config_path = "rx_config.ini";
 
-int Config::getLang()
+Config::Config()
 {
     char *file_data = _readFile(_config_path.c_str());
     j_doc = QJsonDocument::fromJson(file_data);
     free(file_data);
-    QJsonObject j_config = j_doc.object();
-    uint lang_id = j_config["lang"].toInt();
+}
 
-    switch(lang_id)
+ChannelsModel &Config::getChannelsModel()
+{
+    ASSERT_WITH_CODE(!_channels_model.rowCount(), return _channels_model);
+
+    uint channel_id = -1;
+    QJsonArray j_channels = j_doc.object()["channels"].toArray();
+    for(QJsonValue j_channel : j_channels)
+    {
+        _channels_model.addChannel(Channel(j_channel.toObject()["name"].toString(), ++channel_id));
+    }
+
+    return _channels_model;
+}
+
+ChannelActions &Config::getChannelActionsModel(qint32 channel_id)
+{
+    return _channels_actions_model[channel_id];
+}
+
+void Config::setChannelsModel(ChannelsModel *channels_model)
+{
+    if(!channels_model)
+        channels_model = &_channels_model;
+
+    QList<Channel> &channels = channels_model->getChannels();
+    j_channels = j_doc.object()["channels"].toArray();
+    for(Channel &channel : channels)
+    {
+        QJsonObject j_channel = j_channels[channel.channel()].toObject();
+
+        j_channel["name"] = channel.name();
+        j_channels[channel.channel()] = j_channel;
+    }
+}
+
+int Config::getLang()
+{
+    ASSERT_WITH_CODE(!_lang_id, return _lang_id);
+
+    QJsonObject j_config = j_doc.object();
+    j_lang = j_config["lang"];
+    _lang_id = j_lang.toInt();
+
+    switch(_lang_id)
     {
     case LANG_ENGLISH:
     case LANG_RUSSIAN:
     case LANG_UKRAINIAN:
-        return lang_id;
+        return _lang_id;
     default:
         _createDummyConfig(_config_path);
         return getLang();
@@ -29,12 +71,22 @@ int Config::getLang()
 
 void Config::setLang(int lang_id)
 {
+    _lang_id = lang_id;
+    j_lang = _lang_id;
+}
+
+void Config::save()
+{
     QFile file(_config_path.c_str());
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream out(&file);
 
+    //set lang
     QJsonObject j_config = j_doc.object();
-    j_config["lang"] = lang_id;
+    j_config["lang"] = j_lang;
+
+    //set chgannel
+    j_config["channels"] = j_channels;
 
     j_doc.setObject(j_config);
     out << j_doc.toJson();
@@ -72,10 +124,33 @@ int Config::_getSystemLanguage()
 
 void Config::_createDummyConfig(const string str_file)
 {
-    string lang_str = std::to_string(_getSystemLanguage());
-    string text = "{\"lang\":" + lang_str + "}";
+    QJsonArray json_actions;
+    for(int action_id = 0; action_id < MAX_ACTIONS; ++action_id)
+    {
+        QJsonObject json_action;
+        json_action.insert("script", "~/noolite-daemon.sh");
+        json_action.insert("forward_params", QJsonValue(true));
+        json_action.insert("forward_ext", QJsonValue(false));
+        json_actions.push_back(json_action);
+    }
+
+    QJsonArray json_channels;
+    for(int channel_id = 0; channel_id < 64; ++channel_id)
+    {
+        QJsonObject json_channel;
+        json_channel.insert("name", QJsonValue(QString("channel #") + QString::number(channel_id)));
+        json_channel.insert("actions", QJsonValue(json_actions));
+        json_channels.push_back(json_channel);
+    }
+
+    QJsonObject json_obj;
+    json_obj.insert("lang", QJsonValue(_getSystemLanguage()));
+    json_obj.insert("channels", json_channels);
+
+    j_doc = QJsonDocument(json_obj);
     FILE *fp = fopen(str_file.c_str(), "wt");
-    fwrite(text.c_str(), text.length(), 1, fp);
+    string json_str = j_doc.toJson().toStdString();
+    fwrite(json_str.c_str(), json_str.length(), 1, fp);
     fclose(fp);
 }
 

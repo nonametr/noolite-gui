@@ -1,11 +1,12 @@
-import QtQuick 2.4
-import QtQuick.Controls 1.3
+import QtQuick 2.5
+import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.1
-import QtQuick.Dialogs 1.0
+import QtQuick.Dialogs 1.2
+import QtQuick.Controls.Styles 1.4
 
 Item {
     id: mainForm
-    width: 840
+    width: 910
     height: 480
 
     property alias listViewConsoles: listViewConsoles
@@ -37,7 +38,7 @@ Item {
 
             boundsBehavior: Flickable.StopAtBounds
 
-            model: modelConsoles
+            model: cpp_model_channels//cpp model
             clip: true
 
             highlight: Rectangle {
@@ -57,10 +58,12 @@ Item {
         anchors.bottomMargin: 8
         checkable: true
         flat: false
-        checked: true
+        checked: cpp_model_status.active
         anchors.left: parent.left
         anchors.leftMargin: 8
         title: qsTr("Status:")
+
+        onCheckedChanged: cpp_model_status.active = checked
 
         GridLayout {
             id: gridLayout1
@@ -82,7 +85,7 @@ Item {
                 width: 143
                 height: 20
                 Label {
-                    id: labelChannelText3
+                    id: labelData1Text
                     text: qsTr("Data[1]:")
                     font.pointSize: 14
                     font.family: "Times New Roman"
@@ -91,8 +94,8 @@ Item {
                 }
 
                 Label {
-                    id: labelChannel3
-                    text: qsTr("0")
+                    id: labelData1
+                    text: cpp_model_status.data1
                     font.family: "Times New Roman"
                     font.pointSize: 14
                     font.bold: false
@@ -105,7 +108,7 @@ Item {
                 width: 143
                 height: 20
                 Label {
-                    id: labelChannelText5
+                    id: labelData3Text
                     text: qsTr("Data[3]:")
                     font.pointSize: 14
                     font.family: "Times New Roman"
@@ -114,8 +117,8 @@ Item {
                 }
 
                 Label {
-                    id: labelChannel5
-                    text: qsTr("0")
+                    id: labelData3
+                    text: cpp_model_status.data3
                     font.family: "Times New Roman"
                     font.pointSize: 14
                     font.bold: false
@@ -130,7 +133,7 @@ Item {
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 0
                 Label {
-                    id: labelChannelText2
+                    id: labelData0Text
                     text: qsTr("Data[0]:")
                     verticalAlignment: Text.AlignBottom
                     font.pointSize: 14
@@ -140,8 +143,8 @@ Item {
                 }
 
                 Label {
-                    id: labelChannel2
-                    text: qsTr("0")
+                    id: labelData0
+                    text: cpp_model_status.data0
                     font.family: "Times New Roman"
                     verticalAlignment: Text.AlignBottom
                     font.pointSize: 14
@@ -157,7 +160,7 @@ Item {
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 0
                 Label {
-                    id: labelChannelText4
+                    id: labelData2Text
                     text: qsTr("Data[2]:")
                     verticalAlignment: Text.AlignBottom
                     font.pointSize: 14
@@ -167,8 +170,8 @@ Item {
                 }
 
                 Label {
-                    id: labelChannel4
-                    text: qsTr("0")
+                    id: labelData2
+                    text: cpp_model_status.data2
                     verticalAlignment: Text.AlignBottom
                     font.family: "Times New Roman"
                     font.pointSize: 14
@@ -195,8 +198,21 @@ Item {
                 height: 25
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 0
+
                 Label {
-                    id: labelChannelText1
+                    id: labelTogl
+                    text: "[" + cpp_model_status.togl + "]"
+                    verticalAlignment: Text.AlignBottom
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 0
+                    Layout.fillHeight: true
+                    font.family: "Times New Roman"
+                    font.pointSize: 14
+                    font.bold: false
+                }
+
+                Label {
+                    id: labelActopText
                     text: qsTr("Action:")
                     verticalAlignment: Text.AlignBottom
                     anchors.bottom: parent.bottom
@@ -208,8 +224,8 @@ Item {
                 }
 
                 Label {
-                    id: labelChannel1
-                    text: qsTr("dummy")
+                    id: labelAction
+                    text: cpp_model_status.action
                     verticalAlignment: Text.AlignBottom
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 0
@@ -239,7 +255,7 @@ Item {
 
                 Label {
                     id: labelChannel
-                    text: qsTr("dummy")
+                    text: cpp_model_status.channel
                     font.family: "Times New Roman"
                     Layout.fillHeight: true
                     font.bold: false
@@ -291,7 +307,6 @@ Item {
                 ListElement { text: qsTr("Battery low");  }
                 ListElement { text: qsTr("Temperature");  }
             }
-
         }
     }
 
@@ -350,26 +365,31 @@ Item {
         anchors.leftMargin: 8
         spacing: 0
 
-
-
-
         Button {
-            id: buttonLink
+            id: buttonBind
+
             width: 110
-            text: qsTr("Link")
+            text: qsTr("Bind")
+
             Layout.fillHeight: true
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 0
             Layout.fillWidth: true
+
+            onClicked: cpp_controller.onBind(listViewConsoles.currentIndex)
         }
         Button {
-            id: buttonClean
+            id: buttonUnbind
             width: 110
-            text: qsTr("Clean")
+            text: qsTr("Unbind")
             Layout.fillHeight: true
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 0
             Layout.fillWidth: true
+
+            onClicked: {
+                cpp_controller.onUnbind(listViewConsoles.currentIndex)
+            }
         }
         Button {
             id: buttonSave
@@ -379,6 +399,11 @@ Item {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 0
             Layout.fillWidth: true
+
+            onClicked: {
+                cpp_controller.onSave()
+                //console.log(cpp_model_channel_actions.channel_id);
+            }
         }
     }
 
@@ -441,7 +466,7 @@ Item {
         id: labelConsoles
         x: 8
         y: 8
-        text: qsTr("Consoles:")
+        text: qsTr("Channels:")
         anchors.left: parent.left
         anchors.leftMargin: 8
         anchors.top: parent.top
