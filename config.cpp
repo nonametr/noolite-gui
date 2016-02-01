@@ -9,6 +9,7 @@ const string Config::_config_path = "rx_config.ini";
 
 Config::Config()
 {
+    _channels_actions_model.resize(RX2164_MAX_CHANNELS);
     char *file_data = _readFile(_config_path.c_str());
     j_doc = QJsonDocument::fromJson(file_data);
     free(file_data);

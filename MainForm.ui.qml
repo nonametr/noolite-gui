@@ -402,7 +402,7 @@ Item {
 
             onClicked: {
                 cpp_controller.onSave()
-                //console.log(cpp_model_channel_actions.channel_id);
+                console.log(cpp_model_channel_actions.channel_id);
             }
         }
     }
