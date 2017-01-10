@@ -8,7 +8,7 @@
 #include <QJsonArray>
 
 #include "channels_model.h"
-#include "channel_actions_model.h"
+#include "channel_cfg_model.h"
 
 using namespace std;
 
@@ -23,7 +23,6 @@ public:
     void save();
 
     ChannelsModel &getChannelsModel();
-    ChannelActions &getChannelActionsModel(qint32 channel_id);
     void setChannelsModel(ChannelsModel *channels_model = nullptr);
 
 private:
@@ -37,7 +36,6 @@ private:
 
     int _lang_id = 0;
     ChannelsModel _channels_model;
-    QVector<ChannelActions> _channels_actions_model;
 
     static const string _config_path;
 };

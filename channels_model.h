@@ -2,21 +2,25 @@
 #define CONSOLESMODEL_H
 
 #include <QAbstractListModel>
+#include "channel_cfg_model.h"
 
 class Channel
 {
 public:
-    Channel(const QString &v_name, const qint32 &v_channel);
+    Channel(const QString &v_name, const qint32 &v_channel, QList<ChannelCfgModel> &v_channelActions);
 
     QString name() const;
     qint32 channel() const;
+    QList<ChannelCfgModel> &channelActions();
 
     void setName(const QString &v_name);
     void setChannel(const qint32 &v_channel);
+    void setChannelActions(const QList<ChannelCfgModel> &v_channelActions);
 
 private:
     QString _name;
     qint32 _channel;
+    QList<ChannelCfgModel> _channelActions;
 };
 
 class ChannelsModel : public QAbstractListModel
@@ -29,6 +33,18 @@ public:
     };
 
     ChannelsModel(QObject *parent = 0);
+
+    ChannelsModel(const ChannelsModel &r)
+    {
+        this->_channels = r._channels;
+    }
+
+    ChannelsModel & operator = (const ChannelsModel &r)
+    {
+        this->_channels = r._channels;
+
+        return *this;
+    }
 
     void addChannel(const Channel &v_console);
     QList<Channel> &getChannels(){ return _channels; }

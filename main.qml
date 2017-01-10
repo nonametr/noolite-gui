@@ -4,6 +4,7 @@ import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 
 ApplicationWindow {
+
     id: nooliteToolRX
     title: qsTr("RX Tool")
     width: 900
@@ -23,6 +24,30 @@ ApplicationWindow {
         settingsButton.onClicked: messageDialog.show(qsTr("This functionality not Implemented!"));
         exitButton.onClicked: Qt.quit();
         openScriptButton.onClicked: fileDialog.open()
+        buttonBind.onClicked: cpp_controller.onBind(listViewConsoles.currentIndex)
+        buttonUnbind.onClicked: cpp_controller.onUnbind(listViewConsoles.currentIndex)
+        switchForwardData.onCheckedChanged: {
+            cpp_model_channel_cfg.fw = switchForwardData.checked
+            //restore binding
+            switchForwardData.checked = Qt.binding(function () {
+                        return cpp_model_channel_cfg.fw;
+                    });
+        }
+        switchForwardExtData.onCheckedChanged: {
+            cpp_model_channel_cfg.fwExt = switchForwardExtData.checked
+            //restore binding
+            switchForwardExtData.checked = Qt.binding(function () {
+                        return cpp_model_channel_cfg.fwExt;
+                    });
+        }
+        comboBoxAction.onCurrentIndexChanged:
+        {
+            cpp_controller.onChannelSelect(listViewConsoles.currentIndex, comboBoxAction.currentIndex);
+        }
+        buttonSave.onClicked:
+        {
+            cpp_controller.onSave()
+        }
 
         listViewConsoles.delegate: Item {
             property var view: ListView.view
@@ -60,12 +85,13 @@ ApplicationWindow {
                         view.currentIndex = -1
                     }
                     onClicked: {
-                        if(mouse.button == Qt.LeftButton)
+                        if(mouse.button === Qt.LeftButton)
                         {
                             parent.forceActiveFocus(Qt.MouseFocusReason)
                             view.currentIndex = model.index
+                            cpp_controller.onChannelSelect(view.currentIndex, 0);
                         }
-                        else if(mouse.button == Qt.RightButton)
+                        else if(mouse.button === Qt.RightButton)
                         {
                             view.currentIndex = model.index
                             listViewContextMenu.popup()

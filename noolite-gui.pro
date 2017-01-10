@@ -9,7 +9,7 @@ SOURCES += main.cpp \
     channels_model.cpp \
     status_model.cpp \
     formater.cpp \
-    channel_actions_model.cpp
+    channel_cfg_model.cpp
 
 lupdate_only {
 SOURCES = main.qml \
@@ -38,7 +38,7 @@ HEADERS += \
     ../noolite-rx/rx2164.h \
     status_model.h \
     formater.h \
-    channel_actions_model.h
+    channel_cfg_model.h
 
 TRANSLATIONS = translations/english.ts \
                translations/ukrainian.ts \

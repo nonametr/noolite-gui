@@ -38,7 +38,9 @@ public slots:
    void onLanguageChanged(const int new_lang);
    void onBind(const int ch_id);
    void onUnbind(const int ch_id);
+   void onChannelSelect(const int ch_id, const int act_id);
    void onEvent(int new_togl, int action, int channel, int data_format);
+
 
 private:
     RX2164 rx;
@@ -56,6 +58,7 @@ private:
 
     StatusModel _status_model;
     ChannelsModel _channels_model;
+    ChannelCfgModel _channel_cfg_model;
 
     void _setLanguage(const int new_lang);
 };

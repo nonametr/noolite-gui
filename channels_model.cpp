@@ -21,7 +21,7 @@ static QHash<QByteArray, int> mirror_map(QHash<int, QByteArray> &original_map)
 
 QHash<QByteArray, int> ChannelsModel::field_roles = mirror_map(role_fields);
 
-Channel::Channel(const QString &v_name, const qint32 &v_channel) : _name(v_name), _channel(v_channel)
+Channel::Channel(const QString &v_name, const qint32 &v_channel, QList<ChannelCfgModel> &v_channelActions) : _name(v_name), _channel(v_channel), _channelActions(v_channelActions)
 {}
 
 QString Channel::name() const
@@ -34,6 +34,11 @@ qint32 Channel::channel() const
     return _channel;
 }
 
+QList<ChannelCfgModel> &Channel::channelActions()
+{
+    return _channelActions;
+}
+
 void Channel::setName(const QString &v_name)
 {
     _name = v_name;
@@ -42,6 +47,11 @@ void Channel::setName(const QString &v_name)
 void Channel::setChannel(const qint32 &v_channel)
 {
     _channel = v_channel;
+}
+
+void Channel::setChannelActions(const QList<ChannelCfgModel> &v_channelActions)
+{
+    _channelActions = v_channelActions;
 }
 
 ChannelsModel::ChannelsModel(QObject *parent) : QAbstractListModel(parent)
@@ -69,6 +79,7 @@ QVariant ChannelsModel::data(const QModelIndex & index, int role) const {
         return channel.name();
     else if (role == ChannelField)
         return channel.channel();
+
     return QVariant();
 }
 

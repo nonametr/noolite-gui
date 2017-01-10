@@ -9,7 +9,6 @@ const string Config::_config_path = "rx_config.ini";
 
 Config::Config()
 {
-    _channels_actions_model.resize(RX2164_MAX_CHANNELS);
     char *file_data = _readFile(_config_path.c_str());
     j_doc = QJsonDocument::fromJson(file_data);
     free(file_data);
@@ -19,19 +18,24 @@ ChannelsModel &Config::getChannelsModel()
 {
     ASSERT_WITH_CODE(!_channels_model.rowCount(), return _channels_model);
 
-    uint channel_id = -1;
+    int channel_id = -1;
     QJsonArray j_channels = j_doc.object()["channels"].toArray();
     for(QJsonValue j_channel : j_channels)
     {
-        _channels_model.addChannel(Channel(j_channel.toObject()["name"].toString(), ++channel_id));
+        QList<ChannelCfgModel> channelActions;
+        QJsonArray j_channelActions = j_channel.toObject()["actions"].toArray();
+        for(QJsonValue j_action : j_channelActions)
+        {
+            QJsonObject j_obj = j_action.toObject();
+            QString script = j_obj["script"].toString();
+            bool fw = j_obj["forward_ext"].toBool();
+            bool fwExt = j_obj["forward_params"].toBool();
+            channelActions.append(ChannelCfgModel(script, fw, fwExt));
+        }
+        _channels_model.addChannel(Channel(j_channel.toObject()["name"].toString(), ++channel_id, channelActions));
     }
 
     return _channels_model;
-}
-
-ChannelActions &Config::getChannelActionsModel(qint32 channel_id)
-{
-    return _channels_actions_model[channel_id];
 }
 
 void Config::setChannelsModel(ChannelsModel *channels_model)
@@ -45,6 +49,17 @@ void Config::setChannelsModel(ChannelsModel *channels_model)
     {
         QJsonObject j_channel = j_channels[channel.channel()].toObject();
 
+        QJsonArray j_channelAction;
+        for(ChannelCfgModel &channel_model : channel.channelActions())
+        {
+            QJsonObject j_action;
+            j_action["forward_ext"] = channel_model.fwRead();
+            j_action["forward_params"] = channel_model.fwExtRead();
+            j_action["script"] = channel_model.scriptRead();
+            j_channelAction.append(j_action);
+        }
+
+        j_channel["actions"] = j_channelAction;
         j_channel["name"] = channel.name();
         j_channels[channel.channel()] = j_channel;
     }

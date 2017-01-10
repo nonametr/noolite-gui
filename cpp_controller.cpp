@@ -31,6 +31,7 @@ CPPController::CPPController()
         {LANG_UKRAINIAN,    "Ukrainian"}
     };
 
+    _channels_model = config.getChannelsModel();
     rxStart();
 }
 
@@ -63,7 +64,7 @@ void CPPController::setEngine(QQmlApplicationEngine &l_engine)
 
 void CPPController::onSave()
 {
-    config.setChannelsModel();
+    config.setChannelsModel(&_channels_model);
     config.save();
 }
 
@@ -81,6 +82,13 @@ void CPPController::onEvent(int new_togl, int action, int channel, int data_form
     _status_model.setTogl(new_togl);
     _status_model.setAction(action);
     _status_model.setChannel(channel);
+}
+
+void CPPController::onChannelSelect(const int ch_id, const int act_id)
+{
+    engine->rootContext()->setContextProperty("cpp_model_channel_cfg", &_channels_model.getChannels()[ch_id].channelActions()[act_id]);
+
+    qDebug() << "ch:" << ch_id << "act:" << act_id;
 }
 
 void CPPController::onUnbind(const int ch_id)
@@ -132,8 +140,8 @@ void CPPController::reloadWindow()
 
     _context = engine->rootContext();
 
-    _context->setContextProperty("cpp_model_channels", &config.getChannelsModel());
-    _context->setContextProperty("cpp_model_channel_actions", &config.getChannelActionsModel(0));
+    _context->setContextProperty("cpp_model_channels", &_channels_model);
+    _context->setContextProperty("cpp_model_channel_cfg", &_channel_cfg_model);
     _context->setContextProperty("cpp_model_status", &_status_model);
 
     engine->load(QUrl(QStringLiteral("qrc:/main.qml")));

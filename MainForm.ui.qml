@@ -14,6 +14,13 @@ Item {
     property alias settingsButton: settingsButton
     property alias openScriptButton: openScriptButton
     property alias textFieldScriptPath : textFieldScriptPath
+    property alias buttonBind: buttonBind
+    property alias buttonUnbind: buttonUnbind
+    property alias buttonSave: buttonSave
+    property alias comboBoxAction: comboBoxAction
+    property alias modelActions: modelActions
+    property alias switchForwardData: switchForwardData
+    property alias switchForwardExtData: switchForwardExtData
 
     Rectangle {
         id: rectConsoles
@@ -25,6 +32,7 @@ Item {
         anchors.leftMargin: 8
         anchors.top: labelConsoles.bottom
         anchors.topMargin: 8
+
         ListView {
             id: listViewConsoles
             anchors.top: parent.top
@@ -336,6 +344,7 @@ Item {
             TextField {
                 id: textFieldScriptPath
                 placeholderText: "\\home\\user\\rx-action.sh"
+                text: cpp_model_channel_cfg.script
                 anchors.topMargin: 8
                 anchors.right: openScriptButton.left
                 anchors.rightMargin: 4
@@ -375,8 +384,6 @@ Item {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 0
             Layout.fillWidth: true
-
-            onClicked: cpp_controller.onBind(listViewConsoles.currentIndex)
         }
         Button {
             id: buttonUnbind
@@ -386,10 +393,6 @@ Item {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 0
             Layout.fillWidth: true
-
-            onClicked: {
-                cpp_controller.onUnbind(listViewConsoles.currentIndex)
-            }
         }
         Button {
             id: buttonSave
@@ -399,11 +402,6 @@ Item {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 0
             Layout.fillWidth: true
-
-            onClicked: {
-                cpp_controller.onSave()
-                console.log(cpp_model_channel_actions.channel_id);
-            }
         }
     }
 
@@ -427,7 +425,9 @@ Item {
                 id: switchForwardData
                 width: 300
                 height: 25
+                checked: cpp_model_channel_cfg.fw
                 Layout.fillWidth: false
+
             }
 
             Label {
@@ -444,17 +444,20 @@ Item {
             id: rowLayoutSwitchExtData
             width: 100
             height: 100
+
             Switch {
-                id: switchExtData
+                id: switchForwardExtData
                 width: 300
                 height: 25
+                antialiasing: false
                 Layout.fillWidth: false
+                checked: cpp_model_channel_cfg.fwExt
             }
 
             Label {
                 id: labelExtData
                 text: qsTr("Add extended data to script arguments")
-                anchors.left: switchExtData.right
+                anchors.left: switchForwardExtData.right
                 anchors.leftMargin: 8
                 Layout.fillWidth: false
             }
