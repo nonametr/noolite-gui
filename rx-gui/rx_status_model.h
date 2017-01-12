@@ -3,7 +3,7 @@
 
 #include "qobject.h"
 
-class StatusModel : public QObject
+class RxStatusModel : public QObject
 {
     Q_OBJECT
 
@@ -18,8 +18,8 @@ class StatusModel : public QObject
     Q_PROPERTY(QString data3 READ data3Read NOTIFY data3Update)
 
 public:
-    StatusModel() = default;
-    virtual ~StatusModel() override = default;
+    RxStatusModel() = default;
+    virtual ~RxStatusModel() override = default;
 
     bool activeRead() const;
     QString channelRead() const;

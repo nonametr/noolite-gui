@@ -1,12 +1,12 @@
-#include "channel_cfg_model.h"
+#include "rx_channel_cfg_model.h"
 #include <QDebug>
 
-QString ChannelCfgModel::scriptRead() const
+QString RxChannelCfgModel::scriptRead() const
 {
     return _script;
 }
 
-void ChannelCfgModel::setScript(QString new_script)
+void RxChannelCfgModel::setScript(QString new_script)
 {
     if(_script == new_script) return;
 
@@ -15,17 +15,17 @@ void ChannelCfgModel::setScript(QString new_script)
     emit scriptChanged();
 }
 
-bool ChannelCfgModel::fwRead() const
+bool RxChannelCfgModel::fwRead() const
 {
     return _fw;
 }
 
-bool ChannelCfgModel::fwExtRead() const
+bool RxChannelCfgModel::fwExtRead() const
 {
     return _fwExt;
 }
 
-void ChannelCfgModel::setFw(bool new_fw)
+void RxChannelCfgModel::setFw(bool new_fw)
 {
     if(_fw == new_fw) return;
 
@@ -33,7 +33,7 @@ void ChannelCfgModel::setFw(bool new_fw)
     emit fwChanged();
 }
 
-void ChannelCfgModel::setFwExt(bool new_fwExt)
+void RxChannelCfgModel::setFwExt(bool new_fwExt)
 {
     if(_fwExt == new_fwExt) return;
 

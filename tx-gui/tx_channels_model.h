@@ -1,29 +1,25 @@
-#ifndef CONSOLESMODEL_H
-#define CONSOLESMODEL_H
+#ifndef TX_CONSOLESMODEL_H
+#define TX_CONSOLESMODEL_H
 
 #include <QAbstractListModel>
-#include "channel_cfg_model.h"
 
-class Channel
+class TxChannel
 {
 public:
-    Channel(const QString &v_name, const qint32 &v_channel, QList<ChannelCfgModel> &v_channelActions);
+    TxChannel(const QString &v_name, const qint32 &v_channel);
 
     QString name() const;
     qint32 channel() const;
-    QList<ChannelCfgModel> &channelActions();
 
     void setName(const QString &v_name);
     void setChannel(const qint32 &v_channel);
-    void setChannelActions(const QList<ChannelCfgModel> &v_channelActions);
 
 private:
     QString _name;
     qint32 _channel;
-    QList<ChannelCfgModel> _channelActions;
 };
 
-class ChannelsModel : public QAbstractListModel
+class TxChannelsModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
@@ -32,22 +28,22 @@ public:
         ChannelField
     };
 
-    ChannelsModel(QObject *parent = 0);
+    TxChannelsModel(QObject *parent = 0);
 
-    ChannelsModel(const ChannelsModel &r)
+    TxChannelsModel(const TxChannelsModel &r)
     {
         this->_channels = r._channels;
     }
 
-    ChannelsModel & operator = (const ChannelsModel &r)
+    TxChannelsModel & operator = (const TxChannelsModel &r)
     {
         this->_channels = r._channels;
 
         return *this;
     }
 
-    void addChannel(const Channel &v_console);
-    QList<Channel> &getChannels(){ return _channels; }
+    void addChannel(const TxChannel &v_console);
+    QList<TxChannel> &getChannels(){ return _channels; }
 
     virtual int rowCount(const QModelIndex & parent = QModelIndex()) const override;
     virtual QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const override;
@@ -60,10 +56,10 @@ public slots:
     bool setProperty(int row, QString propertyName, QVariant propertyValue);
 
 private:
-    QList<Channel> _channels;
+    QList<TxChannel> _channels;
 
     static QHash<int, QByteArray> role_fields;
     static QHash<QByteArray, int> field_roles;
 };
 
-#endif // CONSOLESMODEL_H
+#endif // TX_CONSOLESMODEL_H

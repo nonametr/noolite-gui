@@ -7,18 +7,24 @@ ApplicationWindow {
 
     id: nooliteToolRX
     title: qsTr("RX Tool")
-    width: 900
-    height: 480
+    x: rx_model_gui.rxX
+    y: rx_model_gui.rxY
+    width: rx_model_gui.rxWidth
+    height: rx_model_gui.rxHeight
     minimumWidth: 900
     minimumHeight: 480
+    onXChanged: if(rx_model_gui.rxX !== nooliteToolRX.x) rx_model_gui.rxX = nooliteToolRX.x
+    onYChanged: if(rx_model_gui.rxY !== nooliteToolRX.y) rx_model_gui.rxY = nooliteToolRX.y
+    onHeightChanged: if(rx_model_gui.rxHeight !== nooliteToolRX.height) rx_model_gui.rxHeight = nooliteToolRX.height
+    onWidthChanged: if(rx_model_gui.rxWidth !== nooliteToolRX.width) rx_model_gui.rxWidth = nooliteToolRX.width
     visible: true
 
     property int lang_english : 1
     property int lang_russian : 2
     property int lang_ukrainian : 3
 
-    MainForm {
-        id: mainForm
+    RxToolWindow {
+        id: rxTool
         anchors.fill: parent
 
         settingsButton.onClicked: messageDialog.show(qsTr("This functionality not Implemented!"));
@@ -27,17 +33,17 @@ ApplicationWindow {
         buttonBind.onClicked: cpp_controller.onBind(listViewConsoles.currentIndex)
         buttonUnbind.onClicked: cpp_controller.onUnbind(listViewConsoles.currentIndex)
         switchForwardData.onCheckedChanged: {
-            cpp_model_channel_cfg.fw = switchForwardData.checked
+            rx_model_channel_cfg.fw = switchForwardData.checked
             //restore binding
             switchForwardData.checked = Qt.binding(function () {
-                        return cpp_model_channel_cfg.fw;
+                        return rx_model_channel_cfg.fw;
                     });
         }
         switchForwardExtData.onCheckedChanged: {
-            cpp_model_channel_cfg.fwExt = switchForwardExtData.checked
+            rx_model_channel_cfg.fwExt = switchForwardExtData.checked
             //restore binding
             switchForwardExtData.checked = Qt.binding(function () {
-                        return cpp_model_channel_cfg.fwExt;
+                        return rx_model_channel_cfg.fwExt;
                     });
         }
         comboBoxAction.onCurrentIndexChanged:
@@ -71,7 +77,7 @@ ApplicationWindow {
                     anchors.centerIn: parent
                     renderType: Text.NativeRendering
                     onEditingFinished: {
-                        cpp_model_channels.setProperty(model.index, "text", text)
+                        rx_model_channels.setProperty(model.index, "text", text)
                     }
                     text: "%1%2".arg(model.text).arg(isCurrent ? " *" : "")
                 }
@@ -147,6 +153,26 @@ ApplicationWindow {
                     }
                 }
             }
+
+            Menu {
+                title: qsTr("&Tool")
+
+                MenuItem {
+                    text: qsTr("&RxTool")
+                    onTriggered: {
+                        cpp_controller.onToolChanged("qrc:/rx-gui/RxTool.qml")
+                        close()
+                    }
+                }
+                MenuItem {
+                    text: qsTr("&TxTool")
+                    onTriggered: {
+                        cpp_controller.onToolChanged("qrc:/tx-gui/TxTool.qml")
+                        close()
+                    }
+                }
+            }
+
             MenuSeparator { }
             MenuItem {
                 text: qsTr("E&xit")

@@ -1,10 +1,12 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
-        <file>MainForm.ui.qml</file>
         <file>translations/english.qm</file>
         <file>translations/russian.qm</file>
         <file>translations/ukrainian.qm</file>
         <file>rx.png</file>
+        <file>rx-gui/RxTool.qml</file>
+        <file>rx-gui/RxToolWindow.ui.qml</file>
+        <file>tx-gui/TxTool.qml</file>
+        <file>tx-gui/TxToolWindow.ui.qml</file>
     </qresource>
 </RCC>

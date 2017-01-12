@@ -1,6 +1,8 @@
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QQmlComponent>
+#include <QQuickWindow>
 #include <QTranslator>
 #include <QIcon>
 
@@ -23,7 +25,6 @@ int main(int argc, char *argv[])
     context->setContextProperty("cpp_controller", &cpp_controller);
 
     cpp_controller.setEngine(engine);
-    cpp_controller.reloadWindow();
-
+    cpp_controller.loadWindow();
     return app.exec();
 }

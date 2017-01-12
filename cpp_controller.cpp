@@ -31,7 +31,13 @@ CPPController::CPPController()
         {LANG_UKRAINIAN,    "Ukrainian"}
     };
 
-    _channels_model = config.getChannelsModel();
+    _currentWindow = config.getCurrentWindow();
+    _rx_gui_model = config.getRxGuiModel();
+    _rx_channels_model = config.getRxChannelsModel();
+
+    _tx_channels_model = config.getTxChannelsModel();
+    _tx_gui_model = config.getTxGuiModel();
+
     rxStart();
 }
 
@@ -64,7 +70,10 @@ void CPPController::setEngine(QQmlApplicationEngine &l_engine)
 
 void CPPController::onSave()
 {
-    config.setChannelsModel(&_channels_model);
+    config.setRxGuiModel(&_rx_gui_model);
+    config.setTxGuiModel(&_tx_gui_model);
+    config.setRxChannelsModel(&_rx_channels_model);
+    config.setTxChannelsModel(&_tx_channels_model);
     config.save();
 }
 
@@ -75,18 +84,74 @@ void CPPController::onLanguageChanged(const int new_lang)
     config.setLang(new_lang);
 }
 
+void CPPController::onToolChanged(QString windowName)
+{
+    _currentWindow = windowName;
+    reloadWindow();
+}
+
 void CPPController::onEvent(int new_togl, int action, int channel, int data_format)
 {
-    ASSERT_WITH_CODE(_context && _status_model.activeRead(), return);
+    ASSERT_WITH_CODE(_context && _rx_status_model.activeRead(), return);
 
-    _status_model.setTogl(new_togl);
-    _status_model.setAction(action);
-    _status_model.setChannel(channel);
+    _rx_status_model.setTogl(new_togl);
+    _rx_status_model.setAction(action);
+    _rx_status_model.setChannel(channel);
+}
+
+enum TX_ACTION { TX_ON, TX_OFF, TX_SWITCH, TX_SET_LVL, TX_BIND, TX_UNBIND, TX_LOAD_PRESET, TX_SAVE_PRESET, TX_STOP_CHANGE, TX_ROLL_COLOR, TX_SWITCH_COLOR, TX_SWITCH_MODE, TX_SWITCH_SPEED_CHANGE_COLOR, TX_SET_COLOR};
+
+void CPPController::onTxExecute(const int ch_id, const int action_id, const int v1, const int v2, const int v3)
+{
+    switch (action_id) {
+    case TX_ON:
+        tx.on(ch_id);
+        break;
+    case TX_OFF:
+        tx.off(ch_id);
+        break;
+    case TX_SWITCH:
+        tx.switchOnOff(ch_id);
+        break;
+    case TX_SET_LVL:
+        tx.setLvl(ch_id, v1);
+        break;
+    case TX_BIND:
+        tx.bind(ch_id);
+        break;
+    case TX_UNBIND:
+        tx.unBind(ch_id);
+        break;
+    case TX_LOAD_PRESET:
+        tx.loadPreset(ch_id);
+        break;
+    case TX_SAVE_PRESET:
+        tx.savePreset(ch_id);
+        break;
+    case TX_STOP_CHANGE:
+        tx.stopChange(ch_id);
+        break;
+    case TX_ROLL_COLOR:
+        tx.rollColor(ch_id);
+        break;
+    case TX_SWITCH_COLOR:
+        tx.switchColor(ch_id);
+        break;
+    case TX_SWITCH_MODE:
+        tx.switchMode(ch_id);
+        break;
+    case TX_SWITCH_SPEED_CHANGE_COLOR:
+        tx.switchSpeedChangeColor(ch_id);
+        break;
+    case TX_SET_COLOR:
+        tx.setColor(ch_id, v1, v2, v3);
+        break;
+    }
 }
 
 void CPPController::onChannelSelect(const int ch_id, const int act_id)
 {
-    engine->rootContext()->setContextProperty("cpp_model_channel_cfg", &_channels_model.getChannels()[ch_id].channelActions()[act_id]);
+    engine->rootContext()->setContextProperty("cpp_model_channel_cfg", &_rx_channels_model.getChannels()[ch_id].channelActions()[act_id]);
 
     qDebug() << "ch:" << ch_id << "act:" << act_id;
 }
@@ -136,15 +201,24 @@ void CPPController::onBind(const int ch_id)
 
 void CPPController::reloadWindow()
 {
+    engine->load(QUrl(_currentWindow));
+}
+
+void CPPController::loadWindow()
+{
     engine->clearComponentCache();
 
     _context = engine->rootContext();
 
-    _context->setContextProperty("cpp_model_channels", &_channels_model);
-    _context->setContextProperty("cpp_model_channel_cfg", &_channel_cfg_model);
-    _context->setContextProperty("cpp_model_status", &_status_model);
+    _context->setContextProperty("rx_model_gui", &_rx_gui_model);
+    _context->setContextProperty("rx_model_channels", &_rx_channels_model);
+    _context->setContextProperty("rx_model_channel_cfg", &_rx_channel_cfg_model);
+    _context->setContextProperty("rx_model_status", &_rx_status_model);
 
-    engine->load(QUrl(QStringLiteral("qrc:/main.qml")));
+    _context->setContextProperty("tx_model_gui", &_tx_gui_model);
+    _context->setContextProperty("tx_model_channels", &_tx_channels_model);
+
+    engine->load(QUrl(_currentWindow));
 }
 
 void CPPController::_setLanguage(const int new_lang)

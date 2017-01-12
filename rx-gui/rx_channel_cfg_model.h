@@ -3,7 +3,7 @@
 
 #include "qobject.h"
 
-class ChannelCfgModel : public QObject
+class RxChannelCfgModel : public QObject
 {
     Q_OBJECT
 
@@ -12,18 +12,18 @@ class ChannelCfgModel : public QObject
     Q_PROPERTY(bool fwExt READ fwExtRead WRITE setFwExt NOTIFY fwExtChanged)
 
 public:
-    ChannelCfgModel(QString new_script, bool new_fw, bool new_fw_ext) : _script(new_script), _fw(new_fw), _fwExt(new_fw_ext) {}
-    ChannelCfgModel() = default;
-    virtual ~ChannelCfgModel() override = default;
+    RxChannelCfgModel(QString new_script, bool new_fw, bool new_fw_ext) : _script(new_script), _fw(new_fw), _fwExt(new_fw_ext) {}
+    RxChannelCfgModel() = default;
+    virtual ~RxChannelCfgModel() override = default;
 
-    ChannelCfgModel(const ChannelCfgModel &r)
+    RxChannelCfgModel(const RxChannelCfgModel &r)
     {
         this->_script = r.scriptRead();
         this->_fw = r.fwRead();
         this->_fwExt = r.fwExtRead();
     }
 
-    ChannelCfgModel & operator = (const ChannelCfgModel &r)
+    RxChannelCfgModel & operator = (const RxChannelCfgModel &r)
     {
         this->_script = r.scriptRead();
         this->_fw = r.fwRead();

@@ -5,9 +5,9 @@ import QtQuick.Dialogs 1.2
 import QtQuick.Controls.Styles 1.4
 
 Item {
-    id: mainForm
-    width: 910
-    height: 480
+    id: rxTool
+    width: cpp_controller.rxWidth
+    height: cpp_controller.rxHeight
 
     property alias listViewConsoles: listViewConsoles
     property alias exitButton: exitButton
@@ -46,7 +46,7 @@ Item {
 
             boundsBehavior: Flickable.StopAtBounds
 
-            model: cpp_model_channels//cpp model
+            model: rx_model_channels//cpp model
             clip: true
 
             highlight: Rectangle {
@@ -66,12 +66,12 @@ Item {
         anchors.bottomMargin: 8
         checkable: true
         flat: false
-        checked: cpp_model_status.active
+        checked: rx_model_status.active
         anchors.left: parent.left
         anchors.leftMargin: 8
         title: qsTr("Status:")
 
-        onCheckedChanged: cpp_model_status.active = checked
+        onCheckedChanged: rx_model_status.active = checked
 
         GridLayout {
             id: gridLayout1
@@ -103,7 +103,7 @@ Item {
 
                 Label {
                     id: labelData1
-                    text: cpp_model_status.data1
+                    text: rx_model_status.data1
                     font.family: "Times New Roman"
                     font.pointSize: 14
                     font.bold: false
@@ -126,7 +126,7 @@ Item {
 
                 Label {
                     id: labelData3
-                    text: cpp_model_status.data3
+                    text: rx_model_status.data3
                     font.family: "Times New Roman"
                     font.pointSize: 14
                     font.bold: false
@@ -152,7 +152,7 @@ Item {
 
                 Label {
                     id: labelData0
-                    text: cpp_model_status.data0
+                    text: rx_model_status.data0
                     font.family: "Times New Roman"
                     verticalAlignment: Text.AlignBottom
                     font.pointSize: 14
@@ -179,7 +179,7 @@ Item {
 
                 Label {
                     id: labelData2
-                    text: cpp_model_status.data2
+                    text: rx_model_status.data2
                     verticalAlignment: Text.AlignBottom
                     font.family: "Times New Roman"
                     font.pointSize: 14
@@ -209,7 +209,7 @@ Item {
 
                 Label {
                     id: labelTogl
-                    text: "[" + cpp_model_status.togl + "]"
+                    text: "[" + rx_model_status.togl + "]"
                     verticalAlignment: Text.AlignBottom
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 0
@@ -233,7 +233,7 @@ Item {
 
                 Label {
                     id: labelAction
-                    text: cpp_model_status.action
+                    text: rx_model_status.action
                     verticalAlignment: Text.AlignBottom
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 0
@@ -263,7 +263,7 @@ Item {
 
                 Label {
                     id: labelChannel
-                    text: cpp_model_status.channel
+                    text: rx_model_status.channel
                     font.family: "Times New Roman"
                     Layout.fillHeight: true
                     font.bold: false
@@ -344,7 +344,7 @@ Item {
             TextField {
                 id: textFieldScriptPath
                 placeholderText: "\\home\\user\\rx-action.sh"
-                text: cpp_model_channel_cfg.script
+                text: rx_model_channel_cfg.script
                 anchors.topMargin: 8
                 anchors.right: openScriptButton.left
                 anchors.rightMargin: 4
@@ -425,7 +425,7 @@ Item {
                 id: switchForwardData
                 width: 300
                 height: 25
-                checked: cpp_model_channel_cfg.fw
+                checked: rx_model_channel_cfg.fw
                 Layout.fillWidth: false
 
             }
@@ -451,7 +451,7 @@ Item {
                 height: 25
                 antialiasing: false
                 Layout.fillWidth: false
-                checked: cpp_model_channel_cfg.fwExt
+                checked: rx_model_channel_cfg.fwExt
             }
 
             Label {
