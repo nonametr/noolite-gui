@@ -14,7 +14,7 @@ class TxGUIModel : public QObject
 
 public:
     TxGUIModel();
-    TxGUIModel(const TxGUIModel &r)
+    TxGUIModel(const TxGUIModel &r) : QObject(nullptr)
     {
         txX = r.txX;
         txY = r.txY;

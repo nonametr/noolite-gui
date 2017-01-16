@@ -34,7 +34,7 @@ public:
 
     RxChannelsModel(QObject *parent = 0);
 
-    RxChannelsModel(const RxChannelsModel &r)
+    RxChannelsModel(const RxChannelsModel &r) : QAbstractListModel(this)
     {
         this->_channels = r._channels;
     }

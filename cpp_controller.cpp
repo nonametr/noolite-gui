@@ -9,6 +9,10 @@
 
 #include <functional>
 
+#define TRX_LANG_ENGLISH 1
+#define TRX_LANG_RUSSIAN 2
+#define TRX_LANG_UKRAINIAN 3
+
 CPPController::CPPController()
 {
     ASSERT_WITH_CODE(!libusb_init(nullptr), "Can't init. libusb", exit(1));
@@ -24,16 +28,16 @@ void CPPController::initGUI()
 
     translator_map =
     {
-        {LANG_ENGLISH,      &en_translator},
-        {LANG_RUSSIAN,      &ru_translator},
-        {LANG_UKRAINIAN,    &ua_translator}
+        {TRX_LANG_ENGLISH,      &en_translator},
+        {TRX_LANG_RUSSIAN,      &ru_translator},
+        {TRX_LANG_UKRAINIAN,    &ua_translator}
     };
 
     lang_map =
     {
-        {LANG_ENGLISH,      "English"},
-        {LANG_RUSSIAN,      "Russian"},
-        {LANG_UKRAINIAN,    "Ukrainian"}
+        {TRX_LANG_ENGLISH,      "English"},
+        {TRX_LANG_RUSSIAN,      "Russian"},
+        {TRX_LANG_UKRAINIAN,    "Ukrainian"}
     };
 
     _currentWindow = config.getCurrentWindow();
@@ -118,6 +122,7 @@ void CPPController::onEvent(int new_togl, int action, int channel, int data_form
     _rx_status_model.setTogl(new_togl);
     _rx_status_model.setAction(action);
     _rx_status_model.setChannel(channel, _rx_channels_model.getChannels()[channel].name());
+    _rx_status_model.setDf(data_format);
     _rx_status_model.setData0(d0);
     _rx_status_model.setData1(d1);
     _rx_status_model.setData2(d2);

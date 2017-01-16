@@ -12,11 +12,11 @@ class RxChannelCfgModel : public QObject
     Q_PROPERTY(bool fwExt READ fwExtRead WRITE setFwExt NOTIFY fwExtChanged)
 
 public:
-    RxChannelCfgModel(QString new_script, bool new_fw, bool new_fw_ext) : _script(new_script), _fw(new_fw), _fwExt(new_fw_ext) {}
-    RxChannelCfgModel() = default;
+    RxChannelCfgModel(QString new_script, bool new_fw, bool new_fw_ext) : QObject(nullptr), _script(new_script), _fw(new_fw), _fwExt(new_fw_ext) {}
+    RxChannelCfgModel() : QObject(nullptr) {}
     virtual ~RxChannelCfgModel() override = default;
 
-    RxChannelCfgModel(const RxChannelCfgModel &r)
+    RxChannelCfgModel(const RxChannelCfgModel &r) : QObject(nullptr)
     {
         this->_script = r.scriptRead();
         this->_fw = r.fwRead();

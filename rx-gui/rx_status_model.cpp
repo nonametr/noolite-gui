@@ -22,6 +22,11 @@ QString RxStatusModel::toglRead() const
     return _togl;
 }
 
+QString RxStatusModel::dfRead() const
+{
+    return _df;
+}
+
 QString RxStatusModel::data0Read() const
 {
     return _data0;
@@ -64,6 +69,12 @@ void RxStatusModel::setTogl(int new_togl)
 {
     _togl = QString::number(new_togl);
     emit toglUpdate();
+}
+
+void RxStatusModel::setDf(int new_df)
+{
+    _df = QString::number(new_df);
+    emit dfUpdate();
 }
 
 void RxStatusModel::setData0(int new_data)

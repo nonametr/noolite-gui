@@ -11,6 +11,7 @@ class RxStatusModel : public QObject
     Q_PROPERTY(QString channel READ channelRead NOTIFY channelUpdate)
     Q_PROPERTY(QString action READ actionRead NOTIFY actionUpdate)
     Q_PROPERTY(QString togl READ toglRead NOTIFY toglUpdate)
+    Q_PROPERTY(QString df READ dfRead NOTIFY dfUpdate)
 
     Q_PROPERTY(QString data0 READ data0Read NOTIFY data0Update)
     Q_PROPERTY(QString data1 READ data1Read NOTIFY data1Update)
@@ -25,6 +26,7 @@ public:
     QString channelRead() const;
     QString actionRead() const;
     QString toglRead() const;
+    QString dfRead() const;
     QString data0Read() const;
     QString data1Read() const;
     QString data2Read() const;
@@ -33,7 +35,8 @@ public:
     void setActive(bool new_active);
     void setChannel(int new_channel, QString channel_name);
     void setAction(int new_action);
-    void setTogl(int new_togl);
+    void setTogl(int new_togl);    
+    void setDf(int new_data);
     void setData0(int new_data);
     void setData1(int new_data);
     void setData2(int new_data);
@@ -43,7 +46,8 @@ signals:
     void activeUpdate();
     void channelUpdate();
     void actionUpdate();
-    void toglUpdate();
+    void toglUpdate();    
+    void dfUpdate();
     void data0Update();
     void data1Update();
     void data2Update();
@@ -54,6 +58,7 @@ private:
     QString _channel;
     QString _action;
     QString _togl;
+    QString _df;
     QString _data0;
     QString _data1;
     QString _data2;

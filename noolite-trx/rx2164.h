@@ -25,6 +25,7 @@
 #include <map>
 
 #include "defs.h"
+#include "common.h"
 
 using namespace std;
 struct libusb_device_handle;
@@ -38,6 +39,7 @@ struct RxActionData
     bool fw;
     bool fw_ext;
 };
+
 
 class RX2164
 {    

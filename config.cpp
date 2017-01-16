@@ -9,9 +9,7 @@ const string Config::_config_path = "rx_config.ini";
 
 Config::Config()
 {
-    char *file_data = _readFile(_config_path.c_str());
-    j_doc = QJsonDocument::fromJson(file_data);
-    free(file_data);
+    j_doc = QJsonDocument::fromJson(_readFile(_config_path.c_str()));
 }
 
 QString Config::getCurrentWindow()
@@ -336,30 +334,16 @@ void Config::_createDummyConfig(const string str_file)
  * @param str_file - file path
  * @return file data
  */
-char* Config::_readFile(const string str_file)
+QByteArray Config::_readFile(const QString str_file)
 {
-    char *buf = nullptr;
-    FILE *fp;
-    int len;
+    QByteArray result;
 
-    fp = fopen(str_file.c_str(),"rt");
+    QFile file(str_file);
+    if (!file.open(QIODevice::ReadOnly))
+        return QByteArray();
 
-    if(!fp)
-    {
-        _createDummyConfig(str_file);
-        return _readFile(str_file);
-    }
-    else
-    {
-        fseek(fp, 0, SEEK_END);
-        len=ftell(fp) + 2;
-        fseek(fp, 0, SEEK_SET);
-        buf=(char *)malloc(len);
-        memset(buf, 0, len);
-        fread(buf, len, 1, fp);
-        fclose(fp);
-        qDebug() << "Loading configuration file from" << str_file.c_str();
-    }
+    result = file.readAll();
+    file.close();
 
-    return buf;
+    return result;
 }

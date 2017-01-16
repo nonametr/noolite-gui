@@ -7,7 +7,7 @@
 #include <QQmlApplicationEngine>
 
 #include <map>
-#include <libusb-1.0/libusb.h>
+#include "libusb-1.0/libusb.h"
 
 #include "config.h"
 #include "common.h"
@@ -22,10 +22,6 @@
 #include "tx-gui/tx_gui_model.h"
 
 using namespace std;
-
-#define LANG_ENGLISH 1
-#define LANG_RUSSIAN 2
-#define LANG_UKRAINIAN 3
 
 class CPPController : public QObject
 {

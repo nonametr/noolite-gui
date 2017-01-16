@@ -19,6 +19,10 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+
+typedef unsigned char u_char;
+typedef unsigned int uint;
+
 #define ASSERT_WITH_CODE_5(cond, ...) \
     if(!(cond)) \
 { \

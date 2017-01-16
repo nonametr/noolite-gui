@@ -13,8 +13,8 @@ class RxGUIModel : public QObject
     Q_PROPERTY(int rxWidth READ rxWidthRead WRITE rxWidthWrite NOTIFY rxWidthChanged)
 
 public:
-    RxGUIModel();
-    RxGUIModel(const RxGUIModel &r)
+    RxGUIModel()  : QObject(nullptr) {}
+    RxGUIModel(const RxGUIModel &r) : QObject(nullptr)
     {
         rxX = r.rxX;
         rxY = r.rxY;

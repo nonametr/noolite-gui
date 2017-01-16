@@ -53,7 +53,7 @@ public:
 
 private:
     void _createDummyConfig(const string str_file);
-    char* _readFile(const string str_file);
+    QByteArray _readFile(const QString str_file);
     int _getSystemLanguage();
 
     QJsonDocument j_doc;

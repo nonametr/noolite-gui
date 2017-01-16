@@ -30,7 +30,7 @@ public:
 
     TxChannelsModel(QObject *parent = 0);
 
-    TxChannelsModel(const TxChannelsModel &r)
+    TxChannelsModel(const TxChannelsModel &r) : QAbstractListModel(this)
     {
         this->_channels = r._channels;
     }

@@ -1,8 +1,5 @@
 #include "rx_gui_model.h"
 
-RxGUIModel::RxGUIModel()
-{}
-
 int RxGUIModel::rxHeightRead() const
 {
     return rxHeight;

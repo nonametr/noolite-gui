@@ -174,7 +174,7 @@ RX2164_STATE RX2164::open(uint _vid, uint _pid)
 {
     ASSERT_WITH_CODE(_state == CLOSED, "RX2164 not ready! Open new device!", return FAILED);
 
-    _handle = libusb_open_device_with_vid_pid(NULL, _vid, _pid);
+    _handle = libusb_open_device_with_vid_pid(nullptr, _vid, _pid);
 
     if(!_handle)
     {
@@ -284,8 +284,8 @@ void RX2164::_processEvents()
     static int new_togl;
     static int prev_togl = -10000;
 
-    unsigned char buf[8];
-    libusb_control_transfer(_handle, LIBUSB_REQUEST_TYPE_CLASS|LIBUSB_RECIPIENT_INTERFACE|LIBUSB_ENDPOINT_IN, 0x9, 0x300, 0, buf, 8, 1000);
+    unsigned char buf[8] = {'\0'};
+    libusb_control_transfer(_handle, LIBUSB_REQUEST_TYPE_CLASS|LIBUSB_RECIPIENT_INTERFACE|LIBUSB_ENDPOINT_IN, 0x9, 0x300, 0, buf, 8, 100);
 
     new_togl = buf[0] & 63;
 
