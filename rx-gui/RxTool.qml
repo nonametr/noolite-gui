@@ -27,7 +27,13 @@ ApplicationWindow {
         id: rxTool
         anchors.fill: parent
 
-        settingsButton.onClicked: messageDialog.show(qsTr("This functionality not Implemented!"));
+        settingsButton.onClicked: {
+            var component = Qt.createComponent("RxToolSettings.qml")
+            var window    = component.createObject(this)
+            window.x = rx_model_gui.rxX
+            window.y = rx_model_gui.rxY
+            window.show()
+        }
         exitButton.onClicked: Qt.quit();
         openScriptButton.onClicked: fileDialog.open()
         buttonBind.onClicked: cpp_controller.onBind(listViewConsoles.currentIndex)

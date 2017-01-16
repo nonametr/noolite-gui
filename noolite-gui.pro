@@ -6,8 +6,8 @@ SOURCES += main.cpp \
     cpp_controller.cpp \
     config.cpp \
     formater.cpp \
-    noolite-tx/tx1132.cpp \
-    noolite-rx/rx2164.cpp \
+    noolite-trx/tx1132.cpp \
+    noolite-trx/rx2164.cpp \
     rx-gui/rx_channels_model.cpp \
     rx-gui/rx_channel_cfg_model.cpp \
     rx-gui/rx_status_model.cpp \
@@ -41,8 +41,8 @@ HEADERS += \
     cpp_controller.h \
     config.h \
     formater.h \
-    noolite-tx/tx1132.h \
-    noolite-rx/rx2164.h \
+    noolite-trx/tx1132.h \
+    noolite-trx/rx2164.h \
     rx-gui/rx_channels_model.h \
     rx-gui/rx_channel_cfg_model.h \
     rx-gui/rx_status_model.h \

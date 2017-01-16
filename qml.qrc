@@ -8,5 +8,7 @@
         <file>rx-gui/RxToolWindow.ui.qml</file>
         <file>tx-gui/TxTool.qml</file>
         <file>tx-gui/TxToolWindow.ui.qml</file>
+        <file>rx-gui/RxToolSettings.qml</file>
+        <file>rx-gui/RxToolSettingsWindow.ui.qml</file>
     </qresource>
 </RCC>

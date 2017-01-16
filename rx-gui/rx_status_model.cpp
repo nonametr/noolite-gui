@@ -1,6 +1,6 @@
 #include "rx_status_model.h"
-#include "noolite-rx/defs.h"
-#include "noolite-rx/defs_to_str.h"
+#include "noolite-trx/defs.h"
+#include "noolite-trx/defs_to_str.h"
 
 bool RxStatusModel::activeRead() const
 {
@@ -48,9 +48,9 @@ void RxStatusModel::setActive(bool new_active)
     emit activeUpdate();
 }
 
-void RxStatusModel::setChannel(int new_channel)
+void RxStatusModel::setChannel(int new_channel, QString channel_name)
 {
-    _channel = QString::number(new_channel);
+    _channel = "[" + QString::number(new_channel) + "]" + channel_name;
     emit channelUpdate();
 }
 

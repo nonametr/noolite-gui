@@ -343,7 +343,7 @@ Item {
 
             TextField {
                 id: textFieldScriptPath
-                placeholderText: "\\home\\user\\rx-action.sh"
+                placeholderText: "\\home\\user\\path_example\\rx-action.sh"
                 text: rx_model_channel_cfg.script
                 anchors.topMargin: 8
                 anchors.right: openScriptButton.left
@@ -358,7 +358,6 @@ Item {
                 anchors.right: parent.right
                 anchors.rightMargin: 0
             }
-
         }
     }
 

@@ -31,7 +31,7 @@ public:
     QString data3Read() const;
 
     void setActive(bool new_active);
-    void setChannel(int new_channel);
+    void setChannel(int new_channel, QString channel_name);
     void setAction(int new_action);
     void setTogl(int new_togl);
     void setData0(int new_data);

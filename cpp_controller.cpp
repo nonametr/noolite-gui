@@ -13,6 +13,11 @@ CPPController::CPPController()
 {
     ASSERT_WITH_CODE(!libusb_init(nullptr), "Can't init. libusb", exit(1));
 
+    rxStart();
+}
+
+void CPPController::initGUI()
+{
     ua_translator.load("ukrainian.qm", ":/translations");
     en_translator.load("english.qm", ":/translations");
     ru_translator.load("russian.qm", ":/translations");
@@ -37,8 +42,6 @@ CPPController::CPPController()
 
     _tx_channels_model = config.getTxChannelsModel();
     _tx_gui_model = config.getTxGuiModel();
-
-    rxStart();
 }
 
 CPPController::~CPPController()
@@ -51,11 +54,29 @@ RX2164_STATE CPPController::rxStart()
 {
     ASSERT_WITH_CODE(rx.state() != LOOPING, return LOOPING);
 
-    std::function<void(int, int, int, int)> callback = std::bind(&CPPController::onEvent, this,
+    std::function<void(int, int, int, int, u_char, u_char, u_char, u_char)> callback = std::bind(&CPPController::onEvent, this,
                                                 std::placeholders::_1, std::placeholders::_2,
-                                                std::placeholders::_3, std::placeholders::_4);//a call of std::bind
+                                                std::placeholders::_3, std::placeholders::_4,
+                                                                 std::placeholders::_5, std::placeholders::_6,
+                                                                 std::placeholders::_7, std::placeholders::_8);
 
-    rx.init(callback);
+    map<channelId, map<actionId, RxActionData>> _channel_actions;
+
+    RxChannelsModel rxChannels = config.getRxChannelsModel();
+    for(RxChannel &channel : rxChannels.getChannels())
+    {
+        for(int i = 0; i < channel.channelActions().size(); ++i)
+        {
+            RxChannelCfgModel &channelModel = channel.channelActions()[i];
+            RxActionData &channelAction = _channel_actions[channel.channel()][i];
+
+            channelAction.script = channelModel.scriptRead().toStdString();
+            channelAction.fw = channelModel.fwRead();
+            channelAction.fw_ext = channelModel.fwExtRead();
+        }
+    }
+
+    rx.init(_channel_actions, callback);
     ASSERT_WITH_CODE(rx.open() == RX2164_STATE::OPENED, QMessageBox::critical(nullptr, tr("Error"), tr("Failed to open RX2164")); return CLOSED);
     ASSERT_WITH_CODE(rx.start() == RX2164_STATE::LOOPING, QMessageBox::critical(nullptr, tr("Error"), tr("Failed to start quering loop on RX2164")); return CLOSED);
 
@@ -90,68 +111,27 @@ void CPPController::onToolChanged(QString windowName)
     reloadWindow();
 }
 
-void CPPController::onEvent(int new_togl, int action, int channel, int data_format)
+void CPPController::onEvent(int new_togl, int action, int channel, int data_format, u_char d0, u_char d1, u_char d2, u_char d3)
 {
     ASSERT_WITH_CODE(_context && _rx_status_model.activeRead(), return);
 
     _rx_status_model.setTogl(new_togl);
     _rx_status_model.setAction(action);
-    _rx_status_model.setChannel(channel);
+    _rx_status_model.setChannel(channel, _rx_channels_model.getChannels()[channel].name());
+    _rx_status_model.setData0(d0);
+    _rx_status_model.setData1(d1);
+    _rx_status_model.setData2(d2);
+    _rx_status_model.setData3(d3);
 }
-
-enum TX_ACTION { TX_ON, TX_OFF, TX_SWITCH, TX_SET_LVL, TX_BIND, TX_UNBIND, TX_LOAD_PRESET, TX_SAVE_PRESET, TX_STOP_CHANGE, TX_ROLL_COLOR, TX_SWITCH_COLOR, TX_SWITCH_MODE, TX_SWITCH_SPEED_CHANGE_COLOR, TX_SET_COLOR};
 
 void CPPController::onTxExecute(const int ch_id, const int action_id, const int v1, const int v2, const int v3)
 {
-    switch (action_id) {
-    case TX_ON:
-        tx.on(ch_id);
-        break;
-    case TX_OFF:
-        tx.off(ch_id);
-        break;
-    case TX_SWITCH:
-        tx.switchOnOff(ch_id);
-        break;
-    case TX_SET_LVL:
-        tx.setLvl(ch_id, v1);
-        break;
-    case TX_BIND:
-        tx.bind(ch_id);
-        break;
-    case TX_UNBIND:
-        tx.unBind(ch_id);
-        break;
-    case TX_LOAD_PRESET:
-        tx.loadPreset(ch_id);
-        break;
-    case TX_SAVE_PRESET:
-        tx.savePreset(ch_id);
-        break;
-    case TX_STOP_CHANGE:
-        tx.stopChange(ch_id);
-        break;
-    case TX_ROLL_COLOR:
-        tx.rollColor(ch_id);
-        break;
-    case TX_SWITCH_COLOR:
-        tx.switchColor(ch_id);
-        break;
-    case TX_SWITCH_MODE:
-        tx.switchMode(ch_id);
-        break;
-    case TX_SWITCH_SPEED_CHANGE_COLOR:
-        tx.switchSpeedChangeColor(ch_id);
-        break;
-    case TX_SET_COLOR:
-        tx.setColor(ch_id, v1, v2, v3);
-        break;
-    }
+    tx.execute(static_cast<TX_ACTION>(action_id), static_cast<u_char>(ch_id), static_cast<u_char>(v1), static_cast<u_char>(v2), static_cast<u_char>(v3));
 }
 
 void CPPController::onChannelSelect(const int ch_id, const int act_id)
 {
-    engine->rootContext()->setContextProperty("cpp_model_channel_cfg", &_rx_channels_model.getChannels()[ch_id].channelActions()[act_id]);
+    engine->rootContext()->setContextProperty("rx_model_channel_cfg", &_rx_channels_model.getChannels()[ch_id].channelActions()[act_id]);
 
     qDebug() << "ch:" << ch_id << "act:" << act_id;
 }

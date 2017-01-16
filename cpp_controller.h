@@ -11,8 +11,8 @@
 
 #include "config.h"
 #include "common.h"
-#include "noolite-rx/rx2164.h"
-#include "noolite-tx/tx1132.h"
+#include "noolite-trx/rx2164.h"
+#include "noolite-trx/tx1132.h"
 
 #include "rx-gui/rx_channels_model.h"
 #include "rx-gui/rx_status_model.h"
@@ -35,6 +35,8 @@ public:
    CPPController();
    virtual ~CPPController() override;
 
+   void initGUI();
+
    RX2164_STATE rxStart();
    void reloadWindow();
    void loadWindow();
@@ -47,7 +49,7 @@ public slots:
     void onBind(const int ch_id);
     void onUnbind(const int ch_id);
     void onChannelSelect(const int ch_id, const int act_id);
-    void onEvent(int new_togl, int action, int channel, int data_format);
+    void onEvent(int new_togl, int action, int channel, int data_format, u_char d0, u_char d1, u_char d2, u_char d3);
     void onTxExecute(const int ch_id, const int action_id, const int v1, const int v2, const int v3);
 
 private:
@@ -72,7 +74,7 @@ private:
 
     TxChannelsModel _tx_channels_model;
     TxGUIModel _tx_gui_model;
-    QString _currentWindow = "qrc:/RxTool.qml";
+    QString _currentWindow;
 
     void _setLanguage(const int new_lang);
 };
