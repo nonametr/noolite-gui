@@ -270,22 +270,22 @@
     <message>
         <location filename="../RxToolWindow.ui.qml" line="97"/>
         <source>Data[1]:</source>
-        <translation>Регистр_1:</translation>
+        <translation>Рег_1:</translation>
     </message>
     <message>
         <location filename="../RxToolWindow.ui.qml" line="120"/>
         <source>Data[3]:</source>
-        <translation>Регистр_3:</translation>
+        <translation>Рег_3:</translation>
     </message>
     <message>
         <location filename="../RxToolWindow.ui.qml" line="145"/>
         <source>Data[0]:</source>
-        <translation>Регистр_0:</translation>
+        <translation>Рег_0:</translation>
     </message>
     <message>
         <location filename="../RxToolWindow.ui.qml" line="172"/>
         <source>Data[2]:</source>
-        <translation>Регистр_2:</translation>
+        <translation>Рег_2:</translation>
     </message>
     <message>
         <location filename="../RxToolWindow.ui.qml" line="224"/>

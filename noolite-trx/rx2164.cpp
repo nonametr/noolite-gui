@@ -73,10 +73,10 @@ bool RX2164::waitForEvent(RX2164_ACTION_TYPE action_type, uint ms_timeout)
 {
     _wait_for_event = true;
 
-    while(_wait_for_event && _last_action != action_type && ms_timeout > RX2163_POOLING_PERIOD)
+    while(_wait_for_event && _last_action != action_type && ms_timeout > RX2164_POOLING_PERIOD)
     {
-        usleep(RX2163_POOLING_PERIOD);
-        ms_timeout -= RX2163_POOLING_PERIOD;
+        usleep(RX2164_POOLING_PERIOD);
+        ms_timeout -= RX2164_POOLING_PERIOD;
     }
 
     return true;
@@ -160,7 +160,7 @@ RX2164_STATE RX2164::start()
     thread.detach();
 
     while(_state == PRE_LOOP)
-        usleep(RX2163_POOLING_PERIOD);
+        usleep(RX2164_POOLING_PERIOD);
 
     return _state;
 }
@@ -307,7 +307,7 @@ void RX2164::_run()
         do
         {
             _processEvents();
-            usleep(RX2163_POOLING_PERIOD);//1000000 - 1s
+            usleep(RX2164_POOLING_PERIOD);//1000000 - 1s
         } while(_state == LOOPING);
     }
     _state = STOPED;

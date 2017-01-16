@@ -16,6 +16,10 @@
 
 using namespace std;
 
+#define TRX_LANG_ENGLISH 1
+#define TRX_LANG_RUSSIAN 2
+#define TRX_LANG_UKRAINIAN 3
+
 class Config
 {
 public:

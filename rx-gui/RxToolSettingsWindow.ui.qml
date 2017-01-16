@@ -16,7 +16,8 @@ Item {
 
     ColumnLayout {
         id: columnLayoutScript
-        height: 43
+        anchors.bottom: columnLayoutExit.top
+        anchors.bottomMargin: 8
         transformOrigin: Item.Center
         anchors.right: parent.right
         anchors.rightMargin: 8

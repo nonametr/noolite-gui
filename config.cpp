@@ -208,9 +208,9 @@ int Config::getLang()
 
     switch(_lang_id)
     {
-    case LANG_ENGLISH:
-    case LANG_RUSSIAN:
-    case LANG_UKRAINIAN:
+    case TRX_LANG_ENGLISH:
+    case TRX_LANG_RUSSIAN:
+    case TRX_LANG_UKRAINIAN:
         return _lang_id;
     default:
         _createDummyConfig(_config_path);
@@ -253,7 +253,7 @@ int Config::_getSystemLanguage()
     switch(country)
     {
     case QLocale::Ukraine:
-        return LANG_UKRAINIAN;
+        return TRX_LANG_UKRAINIAN;
     case QLocale::Russia:
     case QLocale::Belarus:
     case QLocale::Kazakhstan:
@@ -266,12 +266,12 @@ int Config::_getSystemLanguage()
     case QLocale::Azerbaijani:
     case QLocale::ArmenianScript:
     case QLocale::Georgia:
-        return LANG_RUSSIAN;
+        return TRX_LANG_RUSSIAN;
     default:
-        return LANG_ENGLISH;
+        return TRX_LANG_ENGLISH;
     }
 
-    return LANG_ENGLISH;
+    return TRX_LANG_ENGLISH;
 }
 
 void Config::_createDummyConfig(const string str_file)

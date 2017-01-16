@@ -9,10 +9,6 @@
 
 #include <functional>
 
-#define TRX_LANG_ENGLISH 1
-#define TRX_LANG_RUSSIAN 2
-#define TRX_LANG_UKRAINIAN 3
-
 CPPController::CPPController()
 {
     ASSERT_WITH_CODE(!libusb_init(nullptr), "Can't init. libusb", exit(1));
@@ -131,7 +127,10 @@ void CPPController::onEvent(int new_togl, int action, int channel, int data_form
 
 void CPPController::onTxExecute(const int ch_id, const int action_id, const int v1, const int v2, const int v3)
 {
-    tx.execute(static_cast<TX_ACTION>(action_id), static_cast<u_char>(ch_id), static_cast<u_char>(v1), static_cast<u_char>(v2), static_cast<u_char>(v3));
+    if(tx.execute(static_cast<TX_ACTION>(action_id), static_cast<u_char>(ch_id), static_cast<u_char>(v1), static_cast<u_char>(v2), static_cast<u_char>(v3)) == false)
+    {
+        QMessageBox::critical(nullptr, tr("Error"), tr("Failed to send TX command"));
+    }
 }
 
 void CPPController::onChannelSelect(const int ch_id, const int act_id)

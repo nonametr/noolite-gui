@@ -49,7 +49,7 @@ public:
 
     void init(map<channelId, map<actionId, RxActionData>> v_channel_action,
               std::function<void(int, int, int, int, u_char, u_char, u_char, u_char)> &callback, int debug_lvl = RX2164_DEFAULT_DEBUG_LVL);
-    RX2164_STATE open(uint _vid = RX2163_DEV_VID, uint _pid = RX2163_DEV_PID);
+    RX2164_STATE open(uint _vid = RX2164_DEV_VID, uint _pid = RX2164_DEV_PID);
     RX2164_STATE start();
     RX2164_STATE close();
     RX2164_STATE state();
