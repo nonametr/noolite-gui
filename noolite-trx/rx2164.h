@@ -23,12 +23,14 @@
 #include <stdint.h>
 #include <thread>
 #include <map>
+#include <string>
 
 #include "defs.h"
 #include "common.h"
 
 using namespace std;
 struct libusb_device_handle;
+struct libusb_context;
 
 typedef int channelId;
 typedef int actionId;
@@ -72,6 +74,7 @@ private:
     volatile RX2164_ACTION_TYPE _last_action = TURN_OFF;
     volatile RX2164_STATE _state = CLOSED;
     libusb_device_handle *_handle = nullptr;
+    libusb_context *usb_ctx = nullptr;
 
     map<channelId, map<actionId, RxActionData>> _channel_actions;
 };

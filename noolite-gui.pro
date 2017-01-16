@@ -54,4 +54,15 @@ TRANSLATIONS = translations/english.ts \
                translations/ukrainian.ts \
                translations/russian.ts
 
-LIBS += -lusb-1.0
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../opt/local/lib/release/ -lusb-1.0
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../opt/local/lib/debug/ -lusb-1.0
+else:unix: LIBS += -L$$PWD/../../../../opt/local/lib/ -lusb-1.0
+
+INCLUDEPATH += $$PWD/../../../../opt/local/include
+DEPENDPATH += $$PWD/../../../../opt/local/include
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../opt/local/lib/release/libusb-1.0.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../opt/local/lib/debug/libusb-1.0.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../opt/local/lib/release/usb-1.0.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../opt/local/lib/debug/usb-1.0.lib
+else:unix: PRE_TARGETDEPS += $$PWD/../../../../opt/local/lib/libusb-1.0.a

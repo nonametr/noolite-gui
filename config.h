@@ -56,18 +56,15 @@ public:
     void setTxXY(int x, int y);
 
 private:
-    void _createDummyConfig(const string str_file);
+    void _createDummyConfig();
     QByteArray _readFile(const QString str_file);
     int _getSystemLanguage();
 
-    QJsonDocument j_doc;
     QJsonArray j_tx_channels;
     QJsonArray j_rx_channels;
     QJsonObject j_win;
 
-    int _lang_id = 0;
-
-    static const string _config_path;
+    static const QString _config_path;
 };
 
 #endif // CONFIG_H

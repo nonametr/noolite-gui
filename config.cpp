@@ -4,18 +4,33 @@
 #include <QLocale>
 #include <QDebug>
 #include <QFile>
+#include <QDir>
+#include <QMessageBox>
 
-const string Config::_config_path = "rx_config.ini";
+const QString Config::_config_path = QDir::homePath() + "/rx_config.ini";
 
 Config::Config()
 {
-    j_doc = QJsonDocument::fromJson(_readFile(_config_path.c_str()));
+    QJsonDocument j_doc = QJsonDocument::fromJson(_readFile(_config_path));
+
+    if(j_doc.isEmpty())
+    {
+        _createDummyConfig();
+        j_doc = QJsonDocument::fromJson(_readFile(_config_path));
+        if(j_doc.isEmpty())
+        {
+            QMessageBox::critical(nullptr, QObject::tr("Error"), QObject::tr("Failed to load configuration file!"));
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    j_rx_channels = j_doc.object()["rx_channels"].toArray();
+    j_tx_channels = j_doc.object()["tx_channels"].toArray();
+    j_win = j_doc.object()["gui"].toObject();
 }
 
 QString Config::getCurrentWindow()
 {
-    j_win = j_doc.object()["gui"].toObject();
-
     return j_win["currentWindow"].toString();
 }
 
@@ -48,8 +63,7 @@ TxChannelsModel Config::getTxChannelsModel()
     TxChannelsModel _channels_model;
 
     int channel_id = -1;
-    QJsonArray j_channels = j_doc.object()["tx_channels"].toArray();
-    for(QJsonValue j_channel : j_channels)
+    for(QJsonValue j_channel : j_tx_channels)
     {
         _channels_model.addChannel(TxChannel(j_channel.toObject()["name"].toString(), ++channel_id));
     }
@@ -62,8 +76,7 @@ RxChannelsModel Config::getRxChannelsModel()
     RxChannelsModel _channels_model;
 
     int channel_id = -1;
-    QJsonArray j_channels = j_doc.object()["rx_channels"].toArray();
-    for(QJsonValue j_channel : j_channels)
+    for(QJsonValue j_channel : j_rx_channels)
     {
         QList<RxChannelCfgModel> channelActions;
         QJsonArray j_channelActions = j_channel.toObject()["actions"].toArray();
@@ -101,7 +114,7 @@ void Config::setRxGuiModel(RxGUIModel *rx_gui_model)
 void Config::setTxChannelsModel(TxChannelsModel *channels_model)
 {
     QList<TxChannel> &channels = channels_model->getChannels();
-    j_tx_channels = j_doc.object()["rx_channels"].toArray();
+
     for(TxChannel &channel : channels)
     {
         QJsonObject j_channel = j_tx_channels[channel.channel()].toObject();
@@ -114,7 +127,7 @@ void Config::setTxChannelsModel(TxChannelsModel *channels_model)
 void Config::setRxChannelsModel(RxChannelsModel *channels_model)
 {
     QList<RxChannel> &channels = channels_model->getChannels();
-    j_rx_channels = j_doc.object()["rx_channels"].toArray();
+
     for(RxChannel &channel : channels)
     {
         QJsonObject j_channel = j_rx_channels[channel.channel()].toObject();
@@ -137,29 +150,21 @@ void Config::setRxChannelsModel(RxChannelsModel *channels_model)
 
 pair<int, int> Config::getRxHW()
 {
-    j_win = j_doc.object()["gui"].toObject();
-
     return make_pair(j_win["rx"].toObject()["height"].toInt(), j_win["rx"].toObject()["width"].toInt());
 }
 
 pair<int, int> Config::getTxHW()
 {
-    j_win = j_doc.object()["gui"].toObject();
-
     return make_pair(j_win["tx"].toObject()["height"].toInt(), j_win["tx"].toObject()["width"].toInt());
 }
 
 pair<int, int> Config::getRxXY()
 {
-    j_win = j_doc.object()["gui"].toObject();
-
     return make_pair(j_win["rx"].toObject()["x"].toInt(), j_win["rx"].toObject()["y"].toInt());
 }
 
 pair<int, int> Config::getTxXY()
 {
-    j_win = j_doc.object()["gui"].toObject();
-
     return make_pair(j_win["tx"].toObject()["x"].toInt(), j_win["tx"].toObject()["y"].toInt());
 }
 
@@ -201,37 +206,22 @@ void Config::setTxXY(int x, int y)
 
 int Config::getLang()
 {
-    ASSERT_WITH_CODE(!_lang_id, return _lang_id);
-
-    j_win = j_doc.object()["gui"].toObject();
-    _lang_id = j_win["lang"].toInt();
-
-    switch(_lang_id)
-    {
-    case TRX_LANG_ENGLISH:
-    case TRX_LANG_RUSSIAN:
-    case TRX_LANG_UKRAINIAN:
-        return _lang_id;
-    default:
-        _createDummyConfig(_config_path);
-        return getLang();
-    }
+    return j_win["lang"].toInt();
 }
 
 void Config::setLang(int lang_id)
 {
-    _lang_id = lang_id;
-    j_win["lang"] = _lang_id;
+    j_win["lang"] = lang_id;
 }
 
 void Config::save()
 {
-    QFile file(_config_path.c_str());
+    QFile file(_config_path);
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream out(&file);
 
-    //set lang
-    QJsonObject j_config = j_doc.object();
+    QJsonDocument j_doc;
+    QJsonObject j_config;
 
     //set channels
     j_config["rx_channels"] = j_rx_channels;
@@ -242,6 +232,7 @@ void Config::save()
 
     j_doc.setObject(j_config);
     out << j_doc.toJson();
+    out.flush();
 }
 
 int Config::_getSystemLanguage()
@@ -274,7 +265,7 @@ int Config::_getSystemLanguage()
     return TRX_LANG_ENGLISH;
 }
 
-void Config::_createDummyConfig(const string str_file)
+void Config::_createDummyConfig()
 {
     QJsonArray json_rx_actions;
     for(int action_id = 0; action_id < MAX_ACTIONS; ++action_id)
@@ -286,24 +277,21 @@ void Config::_createDummyConfig(const string str_file)
         json_rx_actions.push_back(json_action);
     }
 
-    QJsonArray json_rx_channels;
     for(int channel_id = 0; channel_id < 64; ++channel_id)
     {
         QJsonObject json_channel;
         json_channel.insert("name", QJsonValue(QString("channel #") + QString::number(channel_id)));
         json_channel.insert("actions", QJsonValue(json_rx_actions));
-        json_rx_channels.push_back(json_channel);
+        j_rx_channels.push_back(json_channel);
     }
 
-    QJsonArray json_tx_channels;
     for(int channel_id = 0; channel_id < 64; ++channel_id)
     {
         QJsonObject json_channel;
         json_channel.insert("name", QJsonValue(QString("channel #") + QString::number(channel_id)));
-        json_tx_channels.push_back(json_channel);
+        j_tx_channels.push_back(json_channel);
     }
 
-    QJsonObject json_gui;
     QJsonObject json_rxgui;
     QJsonObject json_txgui;
 
@@ -311,22 +299,12 @@ void Config::_createDummyConfig(const string str_file)
     json_rxgui.insert("width", QJsonValue(900));
     json_txgui.insert("height", QJsonValue(420));
     json_txgui.insert("width", QJsonValue(500));
-    json_gui.insert("lang", QJsonValue(_getSystemLanguage()));
-    json_gui.insert("rx", json_rxgui);
-    json_gui.insert("tx", json_txgui);
-    json_gui.insert("currentWindow", "qrc:/rx-gui/RxTool.qml");
+    j_win.insert("lang", QJsonValue(_getSystemLanguage()));
+    j_win.insert("rx", json_rxgui);
+    j_win.insert("tx", json_txgui);
+    j_win.insert("currentWindow", "qrc:/rx-gui/RxTool.qml");
 
-    QJsonObject json_obj;
-    json_obj.insert("rx_channels", json_rx_channels);
-    json_obj.insert("tx_channels", json_tx_channels);
-    json_obj.insert("gui", json_gui);
-
-    j_doc = QJsonDocument(json_obj);
-    FILE *fp = fopen(str_file.c_str(), "wt");
-    string json_str = j_doc.toJson().toStdString();
-    fwrite(json_str.c_str(), json_str.length(), 1, fp);
-    fflush(fp);
-    fclose(fp);
+    save();
 }
 
 /**
